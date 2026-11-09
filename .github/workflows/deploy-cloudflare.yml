@@ -55,4 +55,4 @@ jobs:
       - name: Show deployment link
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
-        run: echo "Cloudflare deployment URL: ${DEPLOYMENT_URL}"
+        run: |\n          echo "Cloudflare deployment URL: ${DEPLOYMENT_URL}"
