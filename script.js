@@ -82,7 +82,70 @@ const chants=[
  {en:'Pandala Rajakumarane Saranam Ayyappa',te:'పందళ రాజకుమారనే శరణం అయ్యప్ప',meaning:'Refuge in the divine prince of Pandalam.'},
  {en:'Sabari Gireesane Saranam Ayyappa',te:'శబరిగిరీశనే శరణం అయ్యప్ప',meaning:'Refuge in the Lord of Sabarimala.'}
 ];
-let useTelugu=false;function renderChants(){document.getElementById('chant-items').innerHTML=chants.map((c,i)=>`<div class="chant-item"><span class="number">${String(i+1).padStart(2,'0')}</span><span class="chant-main">${useTelugu?c.te:c.en}</span><span class="chant-meaning">${useTelugu?c.en+' · ':''}${c.meaning}</span></div>`).join('');document.getElementById('language-toggle').setAttribute('aria-pressed',String(useTelugu))}document.getElementById('language-toggle').addEventListener('click',()=>{useTelugu=!useTelugu;renderChants()});renderChants();
+let useTelugu=false;function renderChants(){document.getElementById('chant-items').innerHTML=chants.map((c,i)=>`<div class="chant-item"><span class="number">${String(i+1).padStart(2,'0')}</span><span class="chant-main">${useTelugu?c.te:c.en}</span><span class="chant-meaning">${useTelugu?c.en+' · ':''}${c.meaning}</span><button class="chant-listen" type="button" data-chant="${i}" aria-label="Listen to invocation ${i+1}">▶ Listen</button></div>`).join('');document.getElementById('language-toggle').setAttribute('aria-pressed',String(useTelugu))}document.getElementById('language-toggle').addEventListener('click',()=>{useTelugu=!useTelugu;window.speechSynthesis?.cancel();renderChants()});renderChants();
+const chantItems=document.getElementById('chant-items'),voiceNote=document.getElementById('chant-voice-note');
+chantItems.addEventListener('click',event=>{
+  const button=event.target.closest('button[data-chant]');
+  if(!button)return;
+  if(!('speechSynthesis' in window)){voiceNote.textContent='Speech playback is unavailable in this browser. Read the text or ask a Guru Swamy for pronunciation guidance.';return}
+  const chant=chants[Number(button.dataset.chant)];
+  if(!chant)return;
+  window.speechSynthesis.cancel();
+  const utterance=new SpeechSynthesisUtterance(useTelugu?chant.te:chant.en);
+  utterance.lang=useTelugu?'te-IN':'en-IN';utterance.rate=.78;utterance.volume=.9;
+  const voices=window.speechSynthesis.getVoices();
+  const voice=voices.find(v=>v.lang.toLowerCase()===utterance.lang.toLowerCase())||voices.find(v=>v.lang.toLowerCase().startsWith(useTelugu?'te':'en-in'));
+  if(voice)utterance.voice=voice;
+  voiceNote.textContent=voice?'Playing a device-generated pronunciation; verify words with a trusted guide.':'Using your device default voice; Telugu or transliteration pronunciation may be inaccurate.';
+  utterance.onerror=()=>{voiceNote.textContent='Unable to play pronunciation on this device. Try another browser or read the transliteration.'};
+  window.speechSynthesis.speak(utterance);
+});
+
 const nav=document.getElementById('nav'),scrollBar=document.getElementById('scroll-progress');function onScroll(){nav.classList.toggle('scrolled',window.scrollY>40);scrollBar.style.width=`${Math.min(100,(window.scrollY/(document.documentElement.scrollHeight-innerHeight))*100)}%`}window.addEventListener('scroll',onScroll,{passive:true});onScroll();
 const menuToggle=document.getElementById('menu-toggle'),links=document.getElementById('nav-links');menuToggle.addEventListener('click',()=>{let open=links.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(open));menuToggle.textContent=open?'✕':'☰'});links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');menuToggle.textContent='☰'}));
 const heroVideo=document.getElementById('hero-video'),closingVideo=document.getElementById('closing-video'),motionButton=document.getElementById('motion-toggle');let motionOn=!window.matchMedia('(prefers-reduced-motion: reduce)').matches;function applyMotion(){[heroVideo,closingVideo].forEach(v=>{if(motionOn){if(v===heroVideo||v.dataset.visible==='true')v.play().catch(()=>{})}else v.pause()});motionButton.textContent=motionOn?'Ⅱ':'▶';motionButton.setAttribute('aria-label',motionOn?'Pause background video':'Play background video')}motionButton.addEventListener('click',()=>{motionOn=!motionOn;applyMotion()});const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{closingVideo.dataset.visible=String(entry.isIntersecting);if(motionOn&&entry.isIntersecting)closingVideo.play().catch(()=>{});else closingVideo.pause()})},{threshold:.1});observer.observe(closingVideo);applyMotion();
+
+/* Audio Sanctuary: original browser-synthesized bells, no media downloads or autoplay. */
+const ambientButton=document.getElementById('ambient-toggle');
+const ambientStatus=document.getElementById('audio-status');
+const ambientVolume=document.getElementById('ambient-volume');
+let ambientContext=null,ambientMaster=null,ambientTimer=null,ambientEnabled=false;
+function soundBell(){
+  if(!ambientContext||!ambientMaster||ambientContext.state!=='running')return;
+  const start=ambientContext.currentTime;
+  // Original bell-like partials, rather than a reproduction of a recorded composition.
+  for(const [multiplier,level,decay] of [[1,.22,4.2],[2.01,.075,3],[2.98,.032,2.3],[4.07,.013,1.8]]){
+    const osc=ambientContext.createOscillator(),env=ambientContext.createGain();
+    osc.type='sine';osc.frequency.setValueAtTime(288*multiplier,start);
+    env.gain.setValueAtTime(.0001,start);env.gain.exponentialRampToValueAtTime(level,start+.018);
+    env.gain.exponentialRampToValueAtTime(.0001,start+decay);
+    osc.connect(env);env.connect(ambientMaster);osc.start(start);osc.stop(start+decay+.05);
+  }
+}
+async function startAmbience(){
+  const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+  if(!AudioContextClass){ambientStatus.textContent='This browser does not support synthesized audio.';return}
+  try{
+    if(!ambientContext||ambientContext.state==='closed'){
+      ambientContext=new AudioContextClass();
+      ambientMaster=ambientContext.createGain();ambientMaster.connect(ambientContext.destination);
+    }
+    await ambientContext.resume();
+    ambientMaster.gain.value=(Number(ambientVolume.value)/100)*.65;
+    ambientEnabled=true;soundBell();ambientTimer=window.setInterval(soundBell,10500);
+    ambientButton.setAttribute('aria-pressed','true');ambientButton.innerHTML='<span aria-hidden="true">Ⅱ</span> Pause peaceful ambience';
+    ambientStatus.textContent='Playing gentle synthesized temple-inspired bells. You can pause at any time.';
+  }catch(e){ambientEnabled=false;ambientStatus.textContent='Audio could not start. Please check your browser sound settings.'}
+}
+function stopAmbience(){
+  ambientEnabled=false;
+  if(ambientTimer!==null){clearInterval(ambientTimer);ambientTimer=null}
+  if(ambientMaster&&ambientContext){ambientMaster.gain.setTargetAtTime(0,ambientContext.currentTime,.06)}
+  ambientButton.setAttribute('aria-pressed','false');
+  ambientButton.innerHTML='<span aria-hidden="true">♫</span> Play peaceful ambience';
+  ambientStatus.textContent='Sound is off.';
+}
+ambientButton.addEventListener('click',()=>ambientEnabled?stopAmbience():startAmbience());
+ambientVolume.addEventListener('input',()=>{if(ambientMaster&&ambientEnabled)ambientMaster.gain.setTargetAtTime((Number(ambientVolume.value)/100)*.65,ambientContext.currentTime,.025)});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&ambientEnabled)stopAmbience()});
+window.addEventListener('pagehide',()=>{if(ambientEnabled)stopAmbience()});
