@@ -16,7 +16,7 @@
   <header class="nav" id="nav">
     <a class="brand" href="#home" aria-label="Saranam home"><span class="brand-mark">✺</span><span>SARANAM<small>THE AYYAPPA JOURNEY</small></span></a>
     <nav class="nav-links" id="nav-links" aria-label="Primary navigation">
-      <a href="#story">His Story</a><a href="#deeksha">The Deeksha</a><a href="#journey">41 Days</a><a href="#chants">Sarana Ghosha</a><a href="#pilgrimage">Pilgrimage</a>
+      <a href="#story">His Story</a><a href="#deeksha">The Deeksha</a><a href="#journey">41 Days</a><a href="#chants">Sarana Ghosha</a><a href="#audio">Listen</a><a href="#pilgrimage">Pilgrimage</a>
     </nav>
     <div class="nav-actions"><button class="sound-btn" id="motion-toggle" aria-label="Pause background video" title="Pause background video">Ⅱ</button><a href="#journey" class="nav-cta">Begin exploring <span>↗</span></a><button id="menu-toggle" class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button></div>
   </header>
@@ -53,8 +53,32 @@
       <div class="tracker-wrap glass-panel"><div class="tracker-top"><div><span class="overline">YOUR PERSONAL PRACTICE</span><h3>Forty-one moments of mindfulness.</h3><p>Select a day to see a gentle reflection. Mark completed days on this device.</p></div><div class="completion-circle"><span id="completed-count">0</span><small>/ 41 DAYS</small></div></div><div class="day-grid" id="day-grid" aria-label="41-day reflection calendar"></div><div class="reflection-panel"><div><span class="overline" id="reflection-day">DAY 01 · BEGINNING</span><h4 id="reflection-title">Begin with intention</h4><p id="reflection-body">Take a moment to reflect on why you have chosen this journey. Approach the Deeksha with humility and sincerity.</p></div><button class="secondary-button" id="mark-day">Mark day complete <span>✓</span></button></div><div class="tracker-note">Progress is stored only in your browser. <button id="reset-progress">Reset progress</button></div></div></div></section>
 
     <section class="chants section-pad" id="chants"><div class="container"><div class="section-head"><div><p class="kicker"><span>04</span> VOICES OF SURRENDER</p><h2>Sarana <em>Ghosha.</em></h2></div><p class="section-intro">“Saranam” expresses taking refuge. Learn familiar invocations in Telugu, English transliteration and short explanations. This starter set is not a complete liturgical text.</p></div>
-      <div class="chants-layout"><div class="chant-art"><div class="chant-circle c1"></div><div class="chant-circle c2"></div><span class="chant-center">శరణం</span><p>THE SOUND OF SURRENDER</p></div><div class="chant-list"><div class="chant-toolbar"><span>FOUNDATIONAL INVOCATIONS</span><button id="language-toggle" class="language-pill" aria-pressed="false">తెలుగు / EN</button></div><div id="chant-items"></div><div class="chant-note"><span>✧</span> For complete, authoritative prayer texts and variations, consult your Guru Swamy and reviewed source editions.</div></div></div></div></section>
+      <div class="chants-layout"><div class="chant-art"><div class="chant-circle c1"></div><div class="chant-circle c2"></div><span class="chant-center">శరణం</span><p>THE SOUND OF SURRENDER</p></div><div class="chant-list"><div class="chant-toolbar"><span>FOUNDATIONAL INVOCATIONS</span><button id="language-toggle" class="language-pill" aria-pressed="false">తెలుగు / EN</button></div><div id="chant-items"></div><p class="chant-voice-note" id="chant-voice-note" role="status">Select “Listen” on any invocation to hear a device-generated pronunciation. Voice quality depends on your device.</p><div class="chant-note"><span>✧</span> For complete, authoritative prayer texts and variations, consult your Guru Swamy and reviewed source editions.</div></div></div></div></section>
 
+
+    <section class="audio-sanctuary section-pad" id="audio" aria-labelledby="audio-heading">
+      <div class="container">
+        <div class="section-head"><div><p class="kicker"><span>05</span> THE SOUND OF SARANAM</p><h2 id="audio-heading">A quiet <em>sanctuary.</em></h2></div><p class="section-intro">A gentle, original digital soundscape inspired by temple bells. Play only when you wish; silence is always the default.</p></div>
+        <div class="audio-sanctuary-layout glass-panel">
+          <div class="audio-orbit" aria-hidden="true"><div class="audio-orbit-inner">✺</div></div>
+          <div class="audio-detail">
+            <span class="overline">ORIGINAL · SYNTHESIZED SOUND</span><h3>Temple bell &amp; stillness</h3>
+            <p>This meditative soundscape is created in your browser—not a recording of a temple, a devotional song, or a traditional mantra. No audio files or third-party trackers are loaded.</p>
+            <div class="audio-controls">
+              <button type="button" id="ambient-toggle" class="primary-button" aria-pressed="false"><span aria-hidden="true">♫</span> Play peaceful ambience</button>
+              <label class="audio-volume">Volume <input id="ambient-volume" type="range" min="0" max="100" value="35" aria-label="Ambience volume"/></label>
+            </div>
+            <p id="audio-status" class="audio-status" role="status" aria-live="polite">Sound is off.</p>
+          </div>
+        </div>
+        <div class="audio-library">
+          <div><span class="overline">EXPLORE AUTHORIZED RECORDINGS</span><h3>Devotional listening</h3><p>Follow the links to listen at their source. We don't copy or rehost artists' recordings without permission.</p></div>
+          <a href="https://www.youtube.com/results?search_query=Harivarasanam+official" target="_blank" rel="noopener noreferrer" class="audio-link">Harivarasanam <span>Find official recordings ↗</span></a>
+          <a href="https://www.youtube.com/results?search_query=Ayyappa+Sarana+Ghosha+official" target="_blank" rel="noopener noreferrer" class="audio-link">Sarana Ghosha <span>Find recordings ↗</span></a>
+          <a href="https://www.pravachanam.com/albums/swamy-ayyappa" target="_blank" rel="noopener noreferrer" class="audio-link">Ayyappa Pravachanam <span>Listen at source ↗</span></a>
+        </div>
+      </div>
+    </section>
     <section class="pilgrimage section-pad" id="pilgrimage"><div class="container"><div class="section-head"><div><p class="kicker"><span>05</span> THE SACRED PILGRIMAGE</p><h2>From the Mala <em>to the mountain.</em></h2></div><p class="section-intro">A beginner-friendly view of the commonly followed sequence. Practical details, eligibility and temple procedures must always be checked against current official guidance.</p></div>
       <div class="pilgrimage-flow"><article class="flow-card"><span class="flow-index">STEP / 01</span><span class="flow-icon">✦</span><h3>Mala Dharana</h3><p>Begin Vratham with prayer, traditionally guided by a Guru Swamy or temple priest.</p></article><article class="flow-card"><span class="flow-index">STEP / 02</span><span class="flow-icon">☼</span><h3>Mandala Vratham</h3><p>Observe the 41-day period of discipline, prayer, simple living and self-restraint.</p></article><article class="flow-card"><span class="flow-index">STEP / 03</span><span class="flow-icon">◇</span><h3>Irumudi Kettu</h3><p>Prepare the sacred two-compartment bundle under the Guru Swamy's guidance.</p></article><article class="flow-card"><span class="flow-index">STEP / 04</span><span class="flow-icon">⌁</span><h3>Pampa &amp; Sannidhanam</h3><p>Travel the pilgrimage route, worship reverently and follow the current shrine protocols.</p></article><article class="flow-card"><span class="flow-index">STEP / 05</span><span class="flow-icon">✧</span><h3>Pathinettampadi</h3><p>The sacred 18 steps are traditionally ascended with Irumudi, subject to temple rules.</p></article></div>
       <div class="guru-card glass-panel"><div class="guru-symbol">गुरु</div><div><span class="overline">A GUIDING PRESENCE</span><h3>Why the Guru Swamy matters</h3><p>The Guru Swamy is a trusted guide in the pilgrimage tradition, helping devotees understand the vow, local customs, the Irumudi and the responsibilities of the journey. Listen respectfully, clarify doubts, and remember that guidance should be offered with humility and care.</p><a href="https://sabarimala.kerala.gov.in/rituals" class="text-link" target="_blank" rel="noopener noreferrer">Learn from official ritual guidance ↗</a></div></div>
@@ -68,7 +92,7 @@
 
     <section class="closing"><div class="closing-video-wrap"><video id="closing-video" poster="assets/hero-poster.jpg" muted loop playsinline preload="none" aria-hidden="true"><source src="assets/ayyappa-forest.mp4" type="video/mp4" /></video></div><div class="closing-overlay"></div><div class="closing-content"><span class="closing-star">✺</span><p>EVERY JOURNEY BEGINS WITH SURRENDER</p><h2>Swamiye Saranam<br/><em>Ayyappa.</em></h2><a href="#home" class="ghost-button">Return to the beginning ↑</a></div></section>
   </main>
-  <footer class="footer"><div class="container footer-top"><div><div class="brand footer-brand"><span class="brand-mark">✺</span><span>SARANAM<small>THE AYYAPPA JOURNEY</small></span></div><p>A devotional learning experience, built with respect for tradition and a commitment to careful sourcing.</p></div><div class="footer-links"><a href="#story">Discover</a><a href="#deeksha">Deeksha</a><a href="#chants">Prayers</a><a href="#wisdom">Sources</a></div></div><div class="container footer-bottom"><span>Made with devotion · An independent educational project, not an official Sabarimala website.</span><span>స్వామియే శరణం అయ్యప్ప</span></div></footer>
+  <footer class="footer"><div class="container footer-top"><div><div class="brand footer-brand"><span class="brand-mark">✺</span><span>SARANAM<small>THE AYYAPPA JOURNEY</small></span></div><p>A devotional learning experience, built with respect for tradition and a commitment to careful sourcing.</p></div><div class="footer-links"><a href="#story">Discover</a><a href="#deeksha">Deeksha</a><a href="#chants">Prayers</a><a href="#audio">Listen</a><a href="#wisdom">Sources</a></div></div><div class="container footer-bottom"><span>Made with devotion · An independent educational project, not an official Sabarimala website.</span><span>స్వామియే శరణం అయ్యప్ప</span></div></footer>
   <script src="script.js" defer></script>
 </body>
 </html>
