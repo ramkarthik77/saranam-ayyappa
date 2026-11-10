@@ -24,3 +24,21 @@
 .chant-voice-note{font-size:11px;line-height:1.7;color:#b9c1b2}
 @media(max-width:1050px){.audio-library{grid-template-columns:repeat(3,1fr)}.audio-library>div{grid-column:1 / -1}}
 @media(max-width:760px){.audio-sanctuary-layout{grid-template-columns:1fr;padding:26px;gap:10px}.audio-orbit{min-height:220px}.audio-orbit:before{width:160px;height:160px}.audio-orbit:after{width:205px;height:205px}.audio-orbit-inner{font-size:78px}.audio-detail h3{font-size:38px}.audio-library{grid-template-columns:1fr;gap:12px}.audio-library>div{grid-column:auto}.audio-link{min-height:100px}.audio-link span{margin-top:10px}}
+
+/* Synchronized, line-by-line Sarana Ghosha playback */
+.ghosha-player{padding:22px;margin:19px 0 20px;border-color:rgba(232,185,101,.3)}
+.ghosha-top,.ghosha-actions{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ghosha-counter{font:300 20px var(--serif);color:var(--gold2)}
+.ghosha-actions{justify-content:flex-start;flex-wrap:wrap;margin:19px 0}
+.ghosha-main-button{background:var(--gold);border:1px solid var(--gold);color:#142017;cursor:pointer;padding:13px 17px;border-radius:4px;display:flex;gap:12px;align-items:center;font-size:12px;font-weight:700}
+.ghosha-small-button{background:transparent;border:1px solid rgba(232,185,101,.45);color:var(--gold2);cursor:pointer;padding:12px;border-radius:4px;font-size:12px}
+.ghosha-speed{font-size:11px;color:#c3c3b6;display:flex;align-items:center;gap:7px}
+.ghosha-speed select{color:#ead3a3;background:#152219;border:1px solid rgba(232,185,101,.4);border-radius:4px;padding:8px;font:inherit}
+.ghosha-progress{height:5px;background:#344136;border-radius:10px;overflow:hidden}
+.ghosha-progress-fill{height:100%;width:0;background:var(--gold);transition:width .2s}
+.ghosha-explainer{font-size:11px;line-height:1.7;color:#9eaea0;margin:13px 0 0}
+.chant-item{transition:background .25s,border-color .25s;scroll-margin-top:120px}
+.chant-item.ghosha-active{background:linear-gradient(90deg,rgba(232,185,101,.19),transparent);border-left:3px solid var(--gold);padding-left:13px;border-bottom-color:rgba(232,185,101,.35)}
+.chant-item.ghosha-active .chant-main{color:#ffe0a0}
+.chant-item.ghosha-active .chant-listen{border-color:var(--gold);color:var(--gold)}
+@media(max-width:460px){.ghosha-player{padding:16px}.ghosha-actions{gap:10px}.ghosha-main-button{flex:1;justify-content:center}.ghosha-speed{width:100%}}
