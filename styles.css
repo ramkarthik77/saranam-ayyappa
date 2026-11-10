@@ -42,3 +42,204 @@
 .chant-item.ghosha-active .chant-main{color:#ffe0a0}
 .chant-item.ghosha-active .chant-listen{border-color:var(--gold);color:var(--gold)}
 @media(max-width:460px){.ghosha-player{padding:16px}.ghosha-actions{gap:10px}.ghosha-main-button{flex:1;justify-content:center}.ghosha-speed{width:100%}}
+
+/* SARANAM editorial design refinement
+   Direction: devotional, grounded, contemplative.
+   Based on Unslop by Damir Sokolovsky, CC BY 4.0:
+   https://github.com/heydamir/unslop */
+:root{
+ --bg:#10130f;--panel:#191d17;--panel2:#232820;
+ --cream:#f1ebdf;--sub:#bfb8a9;--muted:#a9a396;
+ --gold:#d4b375;--gold2:#e7d3a7;
+ --line:rgba(239,230,208,.11);
+ --sans:'DM Sans',system-ui,sans-serif;
+}
+body{background:var(--bg);font-size:15px;line-height:1.55}
+.container{max-width:1184px;padding-inline:32px}
+.nav{height:72px;padding-inline:max(32px,calc((100vw - 1120px)/2));background:rgba(13,17,13,.86);border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+.nav.scrolled{background:rgba(13,17,13,.94);backdrop-filter:blur(14px)}
+.brand{font-size:16px;letter-spacing:.075em;font-weight:600;gap:9px}
+.brand small{font-size:9px;letter-spacing:.04em;font-weight:400;margin-top:5px}
+.brand-mark{font-size:22px;color:var(--gold)}
+.nav-links{gap:24px}.nav-links a{font-size:13px;color:var(--sub)}
+.nav-cta{font-size:12px;letter-spacing:0;border-color:var(--line);border-radius:8px;padding:10px 14px}
+.nav-cta span{margin-left:8px}
+.sound-btn{border:1px solid var(--line);border-radius:8px;width:36px;height:36px}
+.hero{min-height:640px;height:min(800px,100svh)}
+.hero-video{filter:brightness(1.03) contrast(1.05) saturate(.95)}
+.hero-noise{opacity:.035}
+.hero-shade{background:linear-gradient(90deg,rgba(8,14,10,.92),rgba(8,14,10,.68) 37%,rgba(8,14,10,.12) 80%),linear-gradient(0deg,rgba(9,14,10,.81),transparent 42%)}
+.hero-content{padding-top:76px}
+.eyebrow,.kicker,.overline{font-size:12px;letter-spacing:.015em;text-transform:none;font-weight:500;color:var(--gold)}
+.eyebrow{gap:0}
+.hero-sanskrit{font-size:19px;letter-spacing:0;margin:28px 0 15px}
+.hero h1{font-size:clamp(56px,6vw,88px);line-height:1.06;max-width:720px}
+.hero h1 em,.section-head h2 em,.closing h2 em{font-style:normal;color:var(--gold2)}
+.hero-description{font-size:17px;line-height:1.65;max-width:520px;color:#e3e0d5;margin:24px 0 28px}
+.hero-foot{font-size:11px;letter-spacing:0;bottom:24px;color:#d6d4c8}
+.hero-foot-left{text-transform:none}
+.live-dot{width:5px;height:5px;box-shadow:none}
+.hero-foot-right span{margin-left:24px}
+.primary-button{border-radius:8px;font-size:13px;padding:14px 18px;gap:22px;transition:background .16s ease,border-color .16s ease}
+.primary-button:hover{transform:none;background:#ecd09a}
+.ghost-button{font-size:13px;gap:10px}
+.circle-play{border-color:var(--line);width:32px;height:32px}
+.invocation{height:176px;background:#191d17}
+.invocation p{font-size:clamp(32px,3vw,46px)}
+.invocation-sub{font-size:13px;letter-spacing:0}
+.ornament{font-size:19px}
+.section-pad{padding:96px 0}
+.section-head{gap:48px;margin-bottom:44px}
+.section-head h2{font-size:clamp(42px,4vw,62px);line-height:1.08}
+.section-intro{font-size:15px;line-height:1.72;max-width:390px}
+.kicker{gap:10px;margin-bottom:14px}.kicker span{font-size:13px;color:var(--muted)}
+.overline{font-size:12px;letter-spacing:0}
+.glass-panel{border:1px solid var(--line);background:var(--panel);box-shadow:none;backdrop-filter:none;border-radius:14px}
+.story,.faq{background:#111510}
+.story-layout{gap:24px}
+.story-feature-art{height:288px;background:radial-gradient(circle at 50% 52%,#51472b,#252d21 43%,#171d17 75%)}
+.story-feature-art:before,.story-feature-art:after{opacity:.45}
+.halo{opacity:.2;text-shadow:none}
+.story-figure{text-shadow:none}
+.story-feature-copy{padding:32px}
+.story-feature-copy h3{font-size:40px}
+.story-feature-copy p,.timeline-item p,.guru-card p{font-size:14px;line-height:1.75;color:var(--sub)}
+.story-timeline{padding:4px 0 0 12px}
+.timeline-item{gap:16px;padding:19px 0}.timeline-item h4{font-weight:500;font-size:16px}
+.source-note,.practice-disclaimer{font-size:12px;line-height:1.7;color:var(--muted)}
+.deeksha{background:#171c15}.deeksha-backdrop{background:none}
+.metric-row{padding:28px 0;gap:20px}.metric{gap:18px}
+.metric b{font-size:64px}
+.metric span{font-size:12px;letter-spacing:0;line-height:1.5}
+.section-subhead{margin:40px 0 20px}
+.section-subhead h3{font-size:32px}
+.tab-row{gap:8px}
+.tab{font-size:13px;padding:10px 14px;border-radius:8px}
+.tab.active{color:#161a13}
+.practice-grid{gap:12px}
+.practice-card{border:1px solid var(--line);background:#1c221a;padding:24px;min-height:182px;border-radius:12px;transition:border-color .16s ease}
+.practice-card:hover{transform:none;border-color:rgba(212,179,117,.34)}
+.practice-symbol{font-size:23px}
+.practice-card h4{font-size:16px;font-weight:500;margin:12px 0 8px}
+.practice-card p{font-size:14px;line-height:1.65;color:var(--sub)}
+.journey{background:#111710}
+.tracker-wrap{padding:32px}
+.tracker-top h3{font-size:32px}.tracker-top p{font-size:14px}
+.completion-circle{background:#232a21;border-color:var(--line);width:112px;height:112px}
+.completion-circle span{font-size:42px}
+.completion-circle small{font-size:10px;letter-spacing:0}
+.day-grid{gap:8px}
+.day{border-radius:8px;min-height:44px;background:#242a22;font-size:13px}
+.day.selected{background:#36382c}.day.done{background:#454332;border-color:#6d6448}
+.reflection-panel{background:#242920;border-color:var(--line);padding:24px;border-radius:10px}
+.reflection-panel h4{font-size:28px}.reflection-panel p{font-size:14px}
+.secondary-button{border-radius:8px;font-size:13px;padding:11px 14px}
+.tracker-note{font-size:12px}.tracker-note button{font-size:12px}
+.chants,.wisdom{background:#171c16}
+.chants-layout{gap:40px}
+.chant-art{min-height:460px;background:#24291e;border-color:var(--line);border-radius:14px}
+.chant-circle{border-color:rgba(212,179,117,.18)}
+.chant-circle.c2{animation:none}
+.chant-center{font-size:65px;text-shadow:none}
+.chant-art p{font-size:11px;letter-spacing:0}
+.chant-toolbar span{letter-spacing:0;font-size:12px}
+.language-pill{border-color:var(--line);border-radius:8px;font-size:12px}
+.chant-item{padding:17px 0}.chant-item .chant-main{font-size:15px;font-weight:500}
+.chant-item .chant-meaning{font-size:13px;color:var(--sub)}
+.chant-listen{border-radius:8px;font-size:12px}
+.ghosha-player{padding:20px;border-color:var(--line);border-radius:12px}
+.ghosha-main-button,.ghosha-small-button{border-radius:8px}
+.ghosha-explainer,.chant-voice-note{font-size:12px;line-height:1.65;color:var(--muted)}
+.ghosha-progress-fill{transition:transform .2s ease}
+.audio-sanctuary{background:#111610}
+.audio-sanctuary-layout{gap:40px;padding:36px}
+.audio-orbit{background:none}
+.audio-orbit-inner{text-shadow:none}
+.audio-detail h3{font-size:38px}
+.audio-detail p,.audio-library p{font-size:14px;line-height:1.7}
+.audio-library{gap:12px}
+.audio-link{background:#1c221a;border-radius:12px;padding:20px;font-size:23px;transition:border-color .15s ease}
+.audio-link:hover{transform:none}
+.audio-link span{font-size:12px;margin-top:16px}
+.pilgrimage{background:#161b15}
+.pilgrimage-flow{gap:12px}
+.flow-card{background:#222820;border-radius:12px;padding:24px 20px;min-height:260px}
+.flow-card:after{display:none}
+.flow-index{font-size:12px;letter-spacing:0}
+.flow-icon{font-size:26px;margin:22px 0}
+.flow-card h3{font-size:23px}
+.flow-card p{font-size:13px;line-height:1.65;color:var(--sub)}
+.guru-card{padding:32px;gap:30px}
+.resource-grid{gap:12px}
+.resource-card{min-height:270px;background:#21271e;border-radius:12px;padding:24px;transition:border-color .16s ease}
+.resource-card:hover{transform:none}
+.resource-type{font-size:11px;letter-spacing:0}
+.resource-icon{font-size:25px;margin:24px 0 16px}
+.resource-card h3{font-size:25px}
+.resource-card p{font-size:13px;line-height:1.7}
+.editorial-note{background:#20251d;border-radius:0 10px 10px 0}
+.editorial-note span{font-size:12px;letter-spacing:0}
+.editorial-note p{font-size:13px}
+.faq-list summary{font-size:16px;padding:22px 0}
+.faq-list details p{font-size:14px}
+.closing-video-wrap video{filter:brightness(.65) saturate(.75)}
+.closing-overlay{background:linear-gradient(0deg,#10130f,rgba(12,17,12,.38),#10130f 108%)}
+.closing-content p{letter-spacing:.04em;font-size:12px}
+.closing h2{font-size:clamp(52px,7vw,94px)}
+.footer{background:#0d110d}
+.footer-top p{font-size:13px;color:var(--sub)}
+.footer-links a{font-size:13px}
+.footer-bottom{font-size:12px}
+@media(max-width:1050px){
+ .container{padding-inline:28px}
+ .nav{padding-inline:28px}
+ .nav-links{gap:14px}
+ .story-layout{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){
+ .container{padding-inline:20px}
+ .nav{height:64px;padding-inline:20px}
+ .nav-links{top:64px;padding:20px}
+ .hero{height:720px;min-height:640px}
+ .hero-content{padding-top:80px}
+ .hero h1{font-size:clamp(44px,10vw,66px);max-width:470px}
+ .hero-description{font-size:15px;max-width:380px}
+ .hero-shade{background:linear-gradient(90deg,rgba(7,13,9,.85),rgba(7,13,9,.23)),linear-gradient(0deg,#10130f,transparent 65%)}
+ .hero-foot{font-size:11px}
+ .section-pad{padding:72px 0}
+ .section-head{margin-bottom:32px}
+ .section-head h2{font-size:clamp(38px,8vw,54px)}
+ .section-intro{margin-top:18px}
+ .story-layout,.chants-layout{grid-template-columns:1fr;gap:24px}
+ .story-timeline{padding:0}
+ .story-feature-copy{padding:24px}
+ .metric-row{gap:12px}
+ .metric b{font-size:52px}
+ .metric span{font-size:11px}
+ .practice-grid{grid-template-columns:1fr 1fr}
+ .practice-card{padding:20px}
+ .tracker-wrap{padding:24px 16px}
+ .completion-circle{width:88px;height:88px}
+ .day-grid{grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+ .day{min-height:40px}
+ .reflection-panel{padding:20px}
+ .chant-art{min-height:320px}
+ .audio-sanctuary-layout{grid-template-columns:1fr;padding:24px}
+ .resource-grid{grid-template-columns:1fr 1fr}
+ .pilgrimage-flow{grid-template-columns:repeat(2,1fr)}
+ .footer-bottom{line-height:1.7}
+}
+@media(max-width:460px){
+ .hero h1{font-size:44px}
+ .hero-sanskrit{font-size:17px}
+ .eyebrow{font-size:12px}
+ .practice-grid,.pilgrimage-flow,.resource-grid{grid-template-columns:1fr}
+ .metric b{font-size:45px}
+ .metric span{font-size:10px}
+ .metric{gap:4px}
+ .tracker-top h3{font-size:26px}
+ .day{min-height:38px}
+ .chant-art{min-height:260px}
+ .audio-link{min-height:92px}
+ .footer-links{gap:20px}
+}
