@@ -82,24 +82,92 @@ const chants=[
  {en:'Pandala Rajakumarane Saranam Ayyappa',te:'పందళ రాజకుమారనే శరణం అయ్యప్ప',meaning:'Refuge in the divine prince of Pandalam.'},
  {en:'Sabari Gireesane Saranam Ayyappa',te:'శబరిగిరీశనే శరణం అయ్యప్ప',meaning:'Refuge in the Lord of Sabarimala.'}
 ];
-let useTelugu=false;function renderChants(){document.getElementById('chant-items').innerHTML=chants.map((c,i)=>`<div class="chant-item"><span class="number">${String(i+1).padStart(2,'0')}</span><span class="chant-main">${useTelugu?c.te:c.en}</span><span class="chant-meaning">${useTelugu?c.en+' · ':''}${c.meaning}</span><button class="chant-listen" type="button" data-chant="${i}" aria-label="Listen to invocation ${i+1}">▶ Listen</button></div>`).join('');document.getElementById('language-toggle').setAttribute('aria-pressed',String(useTelugu))}document.getElementById('language-toggle').addEventListener('click',()=>{useTelugu=!useTelugu;window.speechSynthesis?.cancel();renderChants()});renderChants();
-const chantItems=document.getElementById('chant-items'),voiceNote=document.getElementById('chant-voice-note');
-chantItems.addEventListener('click',event=>{
-  const button=event.target.closest('button[data-chant]');
-  if(!button)return;
-  if(!('speechSynthesis' in window)){voiceNote.textContent='Speech playback is unavailable in this browser. Read the text or ask a Guru Swamy for pronunciation guidance.';return}
-  const chant=chants[Number(button.dataset.chant)];
-  if(!chant)return;
-  window.speechSynthesis.cancel();
-  const utterance=new SpeechSynthesisUtterance(useTelugu?chant.te:chant.en);
-  utterance.lang=useTelugu?'te-IN':'en-IN';utterance.rate=.78;utterance.volume=.9;
-  const voices=window.speechSynthesis.getVoices();
-  const voice=voices.find(v=>v.lang.toLowerCase()===utterance.lang.toLowerCase())||voices.find(v=>v.lang.toLowerCase().startsWith(useTelugu?'te':'en-in'));
-  if(voice)utterance.voice=voice;
-  voiceNote.textContent=voice?'Playing a device-generated pronunciation; verify words with a trusted guide.':'Using your device default voice; Telugu or transliteration pronunciation may be inaccurate.';
-  utterance.onerror=()=>{voiceNote.textContent='Unable to play pronunciation on this device. Try another browser or read the transliteration.'};
-  window.speechSynthesis.speak(utterance);
+let useTelugu=false;
+const chantItems=document.getElementById('chant-items');
+const voiceNote=document.getElementById('chant-voice-note');
+const ghoshaPlay=document.getElementById('ghosha-play'),ghoshaStop=document.getElementById('ghosha-stop');
+const ghoshaCounter=document.getElementById('ghosha-counter'),ghoshaProgress=document.getElementById('ghosha-progress'),ghoshaFill=document.getElementById('ghosha-progress-fill');
+const ghoshaSpeed=document.getElementById('ghosha-speed');
+let ghoshaCurrent=-1,ghoshaRunning=false,ghoshaPaused=false,ghoshaSession=0;
+const speechAvailable='speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+function renderChants(){
+ chantItems.innerHTML=chants.map((c,i)=>`<div class="chant-item ${i===ghoshaCurrent?'ghosha-active':''}" id="ghosha-line-${i}" data-line="${i}"><span class="number">${String(i+1).padStart(2,'0')}</span><span class="chant-main">${useTelugu?c.te:c.en}</span><span class="chant-meaning">${useTelugu?c.en+' · ':''}${c.meaning}</span><button class="chant-listen" type="button" data-chant="${i}" aria-label="Play invocation ${i+1}">▶ Listen</button></div>`).join('');
+ document.getElementById('language-toggle').setAttribute('aria-pressed',String(useTelugu));
+}
+function updateGhoshaUI(){
+ chantItems.querySelectorAll('.chant-item').forEach((el,i)=>{
+   const active=i===ghoshaCurrent&&ghoshaRunning;
+   el.classList.toggle('ghosha-active',active);
+   el.setAttribute('aria-current',active?'true':'false');
+   const b=el.querySelector('.chant-listen');
+   if(b)b.textContent=active?'♫ Playing':'▶ Listen';
+ });
+ const position=ghoshaCurrent>=0?ghoshaCurrent+1:0;
+ ghoshaCounter.textContent=String(Math.max(1,position)).padStart(2,'0')+' / '+String(chants.length).padStart(2,'0');
+ const completed=ghoshaRunning?Math.max(0,ghoshaCurrent):ghoshaCurrent<0?0:ghoshaCurrent+1;
+ ghoshaProgress.setAttribute('aria-valuenow',String(completed));
+ ghoshaFill.style.width=(completed/chants.length*100)+'%';
+ ghoshaPlay.querySelector('span').textContent=ghoshaRunning?(ghoshaPaused?'Resume chanting':'Pause chanting'):'Play all invocations';
+ ghoshaPlay.setAttribute('aria-label',ghoshaRunning?(ghoshaPaused?'Resume chanting':'Pause chanting'):'Play all Sarana Ghosha invocations');
+ ghoshaPlay.firstChild.textContent=ghoshaRunning?(ghoshaPaused?'▶ ':'Ⅱ '):'▶ ';
+}
+function stopGhosha(message){
+ ghoshaSession++;ghoshaRunning=false;ghoshaPaused=false;ghoshaCurrent=-1;
+ if(speechAvailable)window.speechSynthesis.cancel();
+ updateGhoshaUI();
+ if(message)voiceNote.textContent=message;
+}
+function speakGhoshaLine(index,session,playAll){
+ if(session!==ghoshaSession||!ghoshaRunning)return;
+ if(index>=chants.length){
+   ghoshaRunning=false;ghoshaPaused=false;ghoshaCurrent=chants.length-1;
+   updateGhoshaUI();ghoshaFill.style.width='100%';ghoshaProgress.setAttribute('aria-valuenow',String(chants.length));
+   voiceNote.textContent='All six invocations complete. Swamiye Saranam Ayyappa.';
+   return;
+ }
+ ghoshaCurrent=index;updateGhoshaUI();
+ const el=document.getElementById('ghosha-line-'+index);
+ if(el && !window.matchMedia('(prefers-reduced-motion: reduce)').matches)el.scrollIntoView({behavior:'smooth',block:'center'});
+ const item=chants[index],utterance=new SpeechSynthesisUtterance(useTelugu?item.te:item.en);
+ utterance.lang=useTelugu?'te-IN':'en-IN';utterance.rate=Number(ghoshaSpeed.value);utterance.volume=1;
+ const voices=window.speechSynthesis.getVoices();
+ const selected=voices.find(v=>v.lang.toLowerCase()===utterance.lang.toLowerCase())||
+   voices.find(v=>v.lang.toLowerCase().startsWith(useTelugu?'te':'en-in'));
+ if(selected)utterance.voice=selected;
+ voiceNote.textContent='Now speaking invocation '+(index+1)+' of '+chants.length+'. Follow the highlighted text. Device pronunciation may vary.';
+ utterance.onend=()=>{if(session===ghoshaSession&&ghoshaRunning){if(playAll)speakGhoshaLine(index+1,session,true);else{ghoshaRunning=false;updateGhoshaUI();ghoshaProgress.setAttribute('aria-valuenow',String(index+1));ghoshaFill.style.width=((index+1)/chants.length*100)+'%')}}};
+ utterance.onerror=(ev)=>{
+   if(session!==ghoshaSession||ev.error==='canceled'||ev.error==='interrupted')return;
+   ghoshaRunning=false;ghoshaPaused=false;updateGhoshaUI();
+   voiceNote.textContent='Voice playback failed or the required language voice is unavailable on this device.';
+ };
+ window.speechSynthesis.speak(utterance);
+}
+function beginGhosha(index,playAll){
+ if(!speechAvailable){voiceNote.textContent='Speech synthesis is unavailable in this browser.';return}
+ stopGhosha();
+ ghoshaRunning=true;ghoshaPaused=false;const session=ghoshaSession;
+ speakGhoshaLine(index,session,playAll);
+}
+ghoshaPlay.addEventListener('click',()=>{
+ if(!ghoshaRunning){beginGhosha(0,true);return}
+ if(ghoshaPaused){window.speechSynthesis.resume();ghoshaPaused=false}
+ else{window.speechSynthesis.pause();ghoshaPaused=true}
+ updateGhoshaUI();
 });
+ghoshaStop.addEventListener('click',()=>stopGhosha('Playback stopped.'));
+ghoshaSpeed.addEventListener('change',()=>{if(ghoshaRunning){const line=ghoshaCurrent;beginGhosha(line,true)}});
+chantItems.addEventListener('click',event=>{
+ const button=event.target.closest('button[data-chant]');if(!button)return;
+ const index=Number(button.dataset.chant);if(index>=0&&index<chants.length)beginGhosha(index,false);
+});
+document.getElementById('language-toggle').addEventListener('click',()=>{
+ stopGhosha('Language changed. Press Play to hear the selected language.');
+ useTelugu=!useTelugu;renderChants();updateGhoshaUI();
+});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&ghoshaRunning&&!ghoshaPaused){window.speechSynthesis.pause();ghoshaPaused=true;updateGhoshaUI()}});
+window.addEventListener('pagehide',()=>{if(ghoshaRunning)stopGhosha()});
+renderChants();updateGhoshaUI();
 
 const nav=document.getElementById('nav'),scrollBar=document.getElementById('scroll-progress');function onScroll(){nav.classList.toggle('scrolled',window.scrollY>40);scrollBar.style.width=`${Math.min(100,(window.scrollY/(document.documentElement.scrollHeight-innerHeight))*100)}%`}window.addEventListener('scroll',onScroll,{passive:true});onScroll();
 const menuToggle=document.getElementById('menu-toggle'),links=document.getElementById('nav-links');menuToggle.addEventListener('click',()=>{let open=links.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(open));menuToggle.textContent=open?'✕':'☰'});links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');menuToggle.textContent='☰'}));
