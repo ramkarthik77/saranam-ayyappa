@@ -42,7 +42,7 @@ jobs:
       - name: Prepare static distribution
         run: |
           mkdir -p _site/assets
-          cp index.html styles.css script.js _site/
+          cp index.html ayyappa-guide.html episode-01.html styles.css script.js _site/
           cp assets/ayyappa-forest.mp4 assets/hero-poster.jpg _site/assets/
       - name: Deploy to Cloudflare Pages
         id: deploy
