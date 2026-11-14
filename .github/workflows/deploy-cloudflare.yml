@@ -39,6 +39,11 @@ jobs:
             echo "Cloudflare project lookup failed (HTTP ${status}). Check token permissions and account ID."
             exit 1
           fi
+          project=/tmp/pages-project.json
+          if [[ "$status" == "404" ]]; then project=/tmp/pages-create.json; fi
+          branch=$(jq -er '.result.production_branch' "$project")
+          echo "Cloudflare production branch: $branch"
+          test "$branch" = main
       - name: Validate homepage JavaScript
         run: node --check script.js && node --check sw.js
       - name: Prepare static distribution
@@ -47,6 +52,7 @@ jobs:
           cp index.html ayyappa-guide.html episode-01.html styles.css script.js robots.txt sitemap.xml 404.html _headers manifest.webmanifest sw.js saranam-icon.svg _site/
           cp assets/ayyappa-forest.mp4 assets/hero-poster.jpg _site/assets/
           cp -R assets/story _site/assets/
+          sed -i "s/__SARANAM_RELEASE__/$GITHUB_SHA/g" _site/sw.js
       - name: Deploy to Cloudflare Pages
         id: deploy
         uses: cloudflare/wrangler-action@v4
@@ -60,3 +66,13 @@ jobs:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
         run: |
           echo "Cloudflare deployment URL: ${DEPLOYMENT_URL}"
+
+      - name: Verify production serves this release
+        run: |
+          set -euo pipefail
+          base=https://saranam-ayyappa.pages.dev
+          for file in index.html ayyappa-guide.html episode-01.html sitemap.xml sw.js; do
+            curl -fsSL --retry 3 --max-time 20 "$base/$file?release=$GITHUB_SHA" -o /tmp/saranam-live
+            cmp "_site/$file" /tmp/saranam-live
+          done
+          test "$(curl -sSL -o /dev/null -w '%{http_code}' "$base/does-not-exist")" = 404
