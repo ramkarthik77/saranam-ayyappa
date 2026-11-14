@@ -1,0 +1,17 @@
+{
+  "name": "SARANAM · The Ayyappa Journey",
+  "short_name": "SARANAM",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#080f0d",
+  "theme_color": "#080f0d",
+  "icons": [
+    {
+      "src": "/saranam-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

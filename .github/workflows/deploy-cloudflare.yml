@@ -40,11 +40,11 @@ jobs:
             exit 1
           fi
       - name: Validate homepage JavaScript
-        run: node --check script.js
+        run: node --check script.js && node --check sw.js
       - name: Prepare static distribution
         run: |
           mkdir -p _site/assets
-          cp index.html ayyappa-guide.html episode-01.html styles.css script.js _site/
+          cp index.html ayyappa-guide.html episode-01.html styles.css script.js robots.txt sitemap.xml 404.html _headers manifest.webmanifest sw.js saranam-icon.svg _site/
           cp assets/ayyappa-forest.mp4 assets/hero-poster.jpg _site/assets/
           cp -R assets/story _site/assets/
       - name: Deploy to Cloudflare Pages
