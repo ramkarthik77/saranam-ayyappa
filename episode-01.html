@@ -29,6 +29,13 @@ main{max-width:1480px;margin:0 auto;padding:45px clamp(20px,5vw,72px) 85px}
 .bottom{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-top:23px;flex-wrap:wrap}.bottom p{color:#aaa59a;margin:0;font-size:12px}.bottom a{font-size:13px;text-decoration:none;color:#edc78b}
 footer{border-top:1px solid #ffffff18;text-align:center;padding:30px 20px;color:#9f9b94;font-size:11px}
 @media(max-width:870px){header{height:auto;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}.brand{font-size:18px}.back{order:3;width:100%}.intro{display:block}.story{grid-template-columns:1fr;min-height:0}.visual{min-height:0;aspect-ratio:4/4.2}.copy{padding:28px 24px 26px}.copy h2{margin:14px 0}.copy p{min-height:0}.image-label{bottom:14px;left:14px}.bottom{align-items:start}}
+@media(max-width:870px){
+header{padding:10px 16px;gap:6px 12px}.brand{font-size:16px;letter-spacing:2px}.brand span{font-size:8px}.back{width:auto;min-height:44px;display:flex;align-items:center}.lang button{min-height:44px;padding:6px 11px}
+main{padding:18px 12px 48px}.intro{margin-bottom:16px;padding-inline:4px}.intro h1{font-size:clamp(32px,8vw,50px);margin:6px 0}.intro p{margin:6px 0 0}.overline{letter-spacing:1.5px}
+.story{grid-template-columns:minmax(0,1fr)}.visual{aspect-ratio:auto;display:grid;place-items:center;background:#0b1015;touch-action:pan-y;min-height:110px}.visual::after,.visual .image-label{display:none}.visual img{position:static;width:auto;height:auto;max-width:100%;max-height:min(58svh,440px);object-fit:contain;animation:none!important;transition:none}
+.copy{padding:16px}.copy h2{font-size:clamp(26px,7vw,38px);margin:8px 0 10px}.copy p{font-size:16px;line-height:1.65;margin-bottom:12px}.copy .source{margin-bottom:12px}
+.controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px 10px;padding-top:10px}.arrow{padding:6px 8px;font-size:14px}.controls #prev{grid-column:1;grid-row:1}.controls #next{grid-column:2;grid-row:1}.dots{grid-column:1/-1;justify-content:center;gap:0}.dot,.dot.active{width:44px;height:44px;max-width:20%;background:transparent;display:grid;place-items:center}.dot::after{content:"";width:7px;height:7px;border-radius:99px;background:#76746d}.dot.active::after{width:22px;background:var(--gold)}html[lang="te"] .copy h2,html[lang="te"] .intro h1{line-height:1.3}
+}
 @media(prefers-reduced-motion:reduce){.visual img{transition:none;animation:none!important}}
 </style></head>
 <body>
