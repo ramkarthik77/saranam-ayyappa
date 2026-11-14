@@ -1,3 +1,4 @@
+const escapeAttribute=value=>value.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;');
 const practices = {
   embrace:[
     ['☼','Prayer & remembrance','Set aside time for prayer, contemplation and respectful remembrance of Lord Ayyappa.'],
@@ -86,7 +87,7 @@ document.getElementById('export-progress').onclick=()=>{const url=URL.createObje
 document.getElementById('import-progress').onchange=async ev=>{const input=ev.target,f=input.files[0];if(!f)return;try{if(f.size>60000)throw Error();const x=JSON.parse(await f.text());if(x.version!==1||!Array.isArray(x.completed)||x.completed.length>41||!x.completed.every(n=>Number.isInteger(n)&&n>=1&&n<=41)||typeof x.start!=='string'||(x.start&&(!/^\d{4}-\d{2}-\d{2}$/.test(x.start)||!Number.isFinite(Date.parse(x.start))))||!x.notes||Array.isArray(x.notes)||typeof x.notes!=='object'||Object.entries(x.notes).some(([k,v])=>!/^([1-9]|[1-3][0-9]|4[01])$/.test(k)||typeof v!=='string'||v.length>1000))throw Error();if(confirm(window.saranamText("Replace this device’s tracker progress with this backup?"))){completed=[...new Set(x.completed)];detail={start:x.start,notes:x.notes};trackerStatus.textContent=window.saranamText("Backup imported.");saveProgress();renderDays()}}catch{trackerStatus.textContent=window.saranamText("Invalid SARANAM progress backup. Nothing was changed.")}finally{input.value=''}};
 {const d=dayNumber();if(d>=1&&d<=41)selected=d;}
 try{localStorage.setItem('saranam-storage-test','1');localStorage.removeItem('saranam-storage-test')}catch{trackerStatus.textContent=window.saranamText("Storage unavailable. Export a backup before leaving.")}
-function renderDays(){renderDetails();dayGrid.innerHTML=reflections.map((r,i)=>{const d=i+1;return `<button class="day ${selected===d?'selected':''} ${dayNumber()===d?'journey-today':''} ${completed.includes(d)?'done':''}" data-day="${d}" aria-label="Day ${d}: ${r[1]}${completed.includes(d)?', complete':''}" aria-pressed="${selected===d}">${String(d).padStart(2,'0')}</button>`}).join('');dayGrid.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{selected=Number(b.dataset.day);renderDays()}));const r=reflections[selected-1];document.getElementById('reflection-day').textContent=`DAY ${String(selected).padStart(2,'0')} · ${r[0].toUpperCase()}`;document.getElementById('reflection-title').textContent=r[1];document.getElementById('reflection-body').textContent=r[2];document.getElementById('completed-count').textContent=completed.length;document.getElementById('mark-day').innerHTML=completed.includes(selected)?window.saranamText("Mark as not completed")+' <span>↺</span>':window.saranamText("Mark day complete")+' <span>✓</span>'}
+function renderDays(){renderDetails();dayGrid.innerHTML=reflections.map((r,i)=>{const d=i+1;return `<button class="day ${selected===d?'selected':''} ${dayNumber()===d?'journey-today':''} ${completed.includes(d)?'done':''}" data-day="${d}" aria-label="${escapeAttribute(completed.includes(d)?window.saranamText("Day {n}: {title}, complete",{n:d,title:r[1]}):window.saranamText("Day {n}: {title}",{n:d,title:r[1]}))}" aria-pressed="${selected===d}">${String(d).padStart(2,'0')}</button>`}).join('');dayGrid.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{selected=Number(b.dataset.day);renderDays()}));const r=reflections[selected-1];document.getElementById('reflection-day').textContent=window.saranamText("DAY {n} · {topic}",{n:String(selected).padStart(2,'0'),topic:r[0].toUpperCase()});document.getElementById('reflection-title').textContent=r[1];document.getElementById('reflection-body').textContent=r[2];document.getElementById('completed-count').textContent=completed.length;document.getElementById('mark-day').innerHTML=completed.includes(selected)?window.saranamText("Mark as not completed")+' <span>↺</span>':window.saranamText("Mark day complete")+' <span>✓</span>'}
 document.getElementById('mark-day').addEventListener('click',()=>{completed=completed.includes(selected)?completed.filter(d=>d!==selected):[...completed,selected].sort((a,b)=>a-b);saveProgress();renderDays()});document.getElementById('reset-progress').addEventListener('click',()=>{if(confirm(window.saranamText("Reset all 41-day reflection progress on this device?"))){backup=[...completed];undoProgress.hidden=false;clearTimeout(undoTimer);undoTimer=setTimeout(()=>{backup=null;undoProgress.hidden=true},10000);completed=[];saveProgress();renderDays()}});renderDays();
 const chants=[
  {en:'Swamiye Saranam Ayyappa',te:'స్వామియే శరణం అయ్యప్ప',meaning:'Lord Ayyappa, I seek refuge in you.'},
@@ -105,7 +106,7 @@ const ghoshaSpeed=document.getElementById('ghosha-speed');
 let ghoshaCurrent=-1,ghoshaRunning=false,ghoshaPaused=false,ghoshaSession=0;
 const speechAvailable='speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
 function voiceFor(){return speechAvailable?window.speechSynthesis.getVoices().find(v=>(useTelugu?/^te(?:[-_]|$)/i:/^en(?:[-_]|$)/i).test(v.lang)):null}
-function syncVoice(){const ok=!!voiceFor();ghoshaPlay.disabled=!ok;chantItems.querySelectorAll('button[data-chant]').forEach(b=>b.disabled=!ok);if(!ghoshaRunning)voiceNote.textContent=ok?window.saranamText("Device voice available. Pronunciation may vary."):useTelugu?'ఈ పరికరంలో తెలుగు వాయిస్ అందుబాటులో లేదు. / No Telugu voice available. Read the invocations below.':'No compatible device voice available. Read the invocations below.';}
+function syncVoice(){const ok=!!voiceFor();ghoshaPlay.disabled=!ok;chantItems.querySelectorAll('button[data-chant]').forEach(b=>b.disabled=!ok);if(!ghoshaRunning){voiceNote.dataset.uiManaged='true';voiceNote.textContent=ok?window.saranamText("Device voice available. Pronunciation may vary."):useTelugu?window.saranamText("No Telugu voice available. Read the invocations below."):window.saranamText("No compatible device voice available. Read the invocations below.");}}
 function renderChants(){
  chantItems.innerHTML=chants.map((c,i)=>`<div class="chant-item ${i===ghoshaCurrent?'ghosha-active':''}" id="ghosha-line-${i}" data-line="${i}"><span class="number">${String(i+1).padStart(2,'0')}</span><span class="chant-main">${useTelugu?c.te:c.en}</span><span class="chant-meaning">${useTelugu?c.en+' · ':''}${c.meaning}</span><button class="chant-listen" type="button" data-chant="${i}" aria-label="${window.saranamText('Play invocation {n}',{n:i+1})}">${window.saranamText('▶ Listen')}</button></div>`).join('');
  document.getElementById('language-toggle').setAttribute('aria-pressed',String(useTelugu));
@@ -119,7 +120,7 @@ function updateGhoshaUI(){
    if(b)b.textContent=active?window.saranamText("♫ Playing"):window.saranamText("▶ Listen");
  });
  const position=ghoshaCurrent>=0?ghoshaCurrent+1:0;
- ghoshaCounter.textContent=String(Math.max(1,position)).padStart(2,'0')+' / '+String(chants.length).padStart(2,'0');
+ ghoshaCounter.textContent=window.saranamText("{n} / {total}",{n:String(Math.max(1,position)).padStart(2,'0'),total:String(chants.length).padStart(2,'0')});
  const completed=ghoshaRunning?Math.max(0,ghoshaCurrent):ghoshaCurrent<0?0:ghoshaCurrent+1;
  ghoshaProgress.setAttribute('aria-valuenow',String(completed));
  ghoshaFill.style.width=(completed/chants.length*100)+'%';
@@ -131,14 +132,14 @@ function stopGhosha(message){
  ghoshaSession++;ghoshaRunning=false;ghoshaPaused=false;ghoshaCurrent=-1;
  if(speechAvailable)window.speechSynthesis.cancel();
  updateGhoshaUI();
- if(message)voiceNote.textContent=message;
+ if(message){voiceNote.dataset.uiManaged='true';voiceNote.textContent=message;}
 }
 function speakGhoshaLine(index,session,playAll){
  if(session!==ghoshaSession||!ghoshaRunning)return;
  if(index>=chants.length){
    ghoshaRunning=false;ghoshaPaused=false;ghoshaCurrent=chants.length-1;
    updateGhoshaUI();ghoshaFill.style.width='100%';ghoshaProgress.setAttribute('aria-valuenow',String(chants.length));
-   voiceNote.textContent=window.saranamText("All six invocations complete. Swamiye Saranam Ayyappa.");
+   voiceNote.dataset.uiManaged='true';voiceNote.textContent=window.saranamText("All six invocations complete. Swamiye Saranam Ayyappa.");
    return;
  }
  ghoshaCurrent=index;updateGhoshaUI();
@@ -147,17 +148,17 @@ function speakGhoshaLine(index,session,playAll){
  const item=chants[index],utterance=new SpeechSynthesisUtterance(useTelugu?item.te:item.en);
  utterance.lang=useTelugu?'te-IN':'en-IN';utterance.rate=Number(ghoshaSpeed.value);utterance.volume=1;
  const selected=voiceFor();if(!selected){stopGhosha();syncVoice();return}utterance.voice=selected;
- voiceNote.textContent='Now speaking invocation '+(index+1)+' of '+chants.length+'. Follow the highlighted text. Device pronunciation may vary.';
+ voiceNote.dataset.uiManaged='true';voiceNote.textContent=window.saranamText("Now speaking invocation {n} of {total}. Follow the highlighted text. Device pronunciation may vary.",{n:index+1,total:chants.length});
  utterance.onend=()=>{if(session===ghoshaSession&&ghoshaRunning){if(playAll)speakGhoshaLine(index+1,session,true);else{ghoshaRunning=false;updateGhoshaUI();ghoshaProgress.setAttribute('aria-valuenow',String(index+1));ghoshaFill.style.width=((index+1)/chants.length*100)+'%';}}};
  utterance.onerror=(ev)=>{
    if(session!==ghoshaSession||ev.error==='canceled'||ev.error==='interrupted')return;
    ghoshaRunning=false;ghoshaPaused=false;updateGhoshaUI();
-   voiceNote.textContent=window.saranamText("Voice playback failed or the required language voice is unavailable on this device.");
+   voiceNote.dataset.uiManaged='true';voiceNote.textContent=window.saranamText("Voice playback failed or the required language voice is unavailable on this device.");
  };
  window.speechSynthesis.speak(utterance);
 }
 function beginGhosha(index,playAll){
- if(!speechAvailable){voiceNote.textContent=window.saranamText("Speech synthesis is unavailable in this browser.");return}
+ if(!speechAvailable){voiceNote.dataset.uiManaged='true';voiceNote.textContent=window.saranamText("Speech synthesis is unavailable in this browser.");return}
  stopGhosha();
  ghoshaRunning=true;ghoshaPaused=false;const session=ghoshaSession;
  speakGhoshaLine(index,session,playAll);
@@ -184,8 +185,8 @@ renderChants();updateGhoshaUI();syncVoice();
 if(speechAvailable){window.speechSynthesis.addEventListener('voiceschanged',syncVoice);document.addEventListener('visibilitychange',()=>{if(document.hidden&&ghoshaRunning)stopGhosha(window.saranamText("Playback stopped."))});const section=chantItems.closest('section');if(section&&'IntersectionObserver' in window)new IntersectionObserver(([entry])=>{if(!entry.isIntersecting&&ghoshaRunning)stopGhosha(window.saranamText("Playback stopped."))}).observe(section);}
 
 const nav=document.getElementById('nav'),scrollBar=document.getElementById('scroll-progress');function onScroll(){nav.classList.toggle('scrolled',window.scrollY>40);scrollBar.style.width=`${Math.min(100,(window.scrollY/(document.documentElement.scrollHeight-innerHeight))*100)}%`}window.addEventListener('scroll',onScroll,{passive:true});onScroll();
-const menuToggle=document.getElementById('menu-toggle'),links=document.getElementById('nav-links');menuToggle.addEventListener('click',()=>{let open=links.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(open));menuToggle.textContent=open?'✕':'☰'});links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');menuToggle.textContent='☰'}));
-const heroVideo=document.getElementById('hero-video'),closingVideo=document.getElementById('closing-video'),motionButton=document.getElementById('motion-toggle');let motionOn=!window.matchMedia('(prefers-reduced-motion: reduce)').matches;function applyMotion(){[heroVideo,closingVideo].forEach(v=>{if(motionOn){if(v===heroVideo||v.dataset.visible==='true'){const sources=[...v.querySelectorAll('[data-src]:not([src])')];if(sources.length){sources.forEach(src=>src.src=src.dataset.src);v.load()}v.play().catch(()=>{})}}else v.pause()});motionButton.textContent=motionOn?'Ⅱ':'▶';motionButton.setAttribute('aria-label',motionOn?window.saranamText("Pause background video"):window.saranamText("Play background video"))}motionButton.addEventListener('click',()=>{motionOn=!motionOn;applyMotion()});const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{closingVideo.dataset.visible=String(entry.isIntersecting);if(motionOn&&entry.isIntersecting)applyMotion();else closingVideo.pause()})},{threshold:.1});observer.observe(closingVideo);applyMotion();
+const menuToggle=document.getElementById('menu-toggle'),links=document.getElementById('nav-links');menuToggle.addEventListener('click',()=>{let open=links.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(open));menuToggle.textContent=open?'✕':'☰'; menuToggle.dataset.uiAria=open?'Close menu':'Open menu';menuToggle.setAttribute('aria-label',window.saranamText(menuToggle.dataset.uiAria))});links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');menuToggle.textContent='☰';menuToggle.dataset.uiAria='Open menu';menuToggle.setAttribute('aria-label',window.saranamText("Open menu"))}));
+const heroVideo=document.getElementById('hero-video'),closingVideo=document.getElementById('closing-video'),motionButton=document.getElementById('motion-toggle');let motionOn=!window.matchMedia('(prefers-reduced-motion: reduce)').matches;function applyMotion(){[heroVideo,closingVideo].forEach(v=>{if(motionOn){if(v===heroVideo||v.dataset.visible==='true'){const sources=[...v.querySelectorAll('[data-src]:not([src])')];if(sources.length){sources.forEach(src=>src.src=src.dataset.src);v.load()}v.play().catch(()=>{})}}else v.pause()});motionButton.textContent=motionOn?'Ⅱ':'▶';motionButton.dataset.uiAria=motionOn?'Pause background video':'Play background video';motionButton.dataset.uiTitle=motionButton.dataset.uiAria;motionButton.setAttribute('aria-label',window.saranamText(motionButton.dataset.uiAria));motionButton.title=window.saranamText(motionButton.dataset.uiTitle)}motionButton.addEventListener('click',()=>{motionOn=!motionOn;applyMotion()});const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{closingVideo.dataset.visible=String(entry.isIntersecting);if(motionOn&&entry.isIntersecting)applyMotion();else closingVideo.pause()})},{threshold:.1});observer.observe(closingVideo);applyMotion();
 
 /* Audio Sanctuary: original browser-synthesized bells, no media downloads or autoplay. */
 const ambientButton=document.getElementById('ambient-toggle');
@@ -206,7 +207,7 @@ function soundBell(){
 }
 async function startAmbience(){
   const AudioContextClass=window.AudioContext||window.webkitAudioContext;
-  if(!AudioContextClass){ambientStatus.textContent=window.saranamText("This browser does not support synthesized audio.");return}
+  if(!AudioContextClass){ambientStatus.dataset.uiManaged='true';ambientStatus.textContent=window.saranamText("This browser does not support synthesized audio.");return}
   try{
     if(!ambientContext||ambientContext.state==='closed'){
       ambientContext=new AudioContextClass();
@@ -215,17 +216,17 @@ async function startAmbience(){
     await ambientContext.resume();
     ambientMaster.gain.value=(Number(ambientVolume.value)/100)*.65;
     ambientEnabled=true;soundBell();ambientTimer=window.setInterval(soundBell,10500);
-    ambientButton.setAttribute('aria-pressed','true');ambientButton.innerHTML='<span aria-hidden="true">Ⅱ</span> Pause peaceful ambience';
-    ambientStatus.textContent=window.saranamText("Playing gentle synthesized temple-inspired bells. You can pause at any time.");
-  }catch(e){ambientEnabled=false;ambientStatus.textContent=window.saranamText("Audio could not start. Please check your browser sound settings.")}
+    ambientButton.setAttribute('aria-pressed','true');ambientButton.innerHTML='<span aria-hidden="true">Ⅱ</span> '+window.saranamText("Pause peaceful ambience");
+    ambientStatus.dataset.uiManaged='true';ambientStatus.textContent=window.saranamText("Playing gentle synthesized temple-inspired bells. You can pause at any time.");
+  }catch(e){ambientEnabled=false;ambientStatus.dataset.uiManaged='true';ambientStatus.textContent=window.saranamText("Audio could not start. Please check your browser sound settings.")}
 }
 function stopAmbience(){
   ambientEnabled=false;
   if(ambientTimer!==null){clearInterval(ambientTimer);ambientTimer=null}
   if(ambientMaster&&ambientContext){ambientMaster.gain.setTargetAtTime(0,ambientContext.currentTime,.06)}
   ambientButton.setAttribute('aria-pressed','false');
-  ambientButton.innerHTML='<span aria-hidden="true">♫</span> Play peaceful ambience';
-  ambientStatus.textContent=window.saranamText("Sound is off.");
+  ambientButton.innerHTML='<span aria-hidden="true">♫</span> '+window.saranamText("Play peaceful ambience");
+  ambientStatus.dataset.uiManaged='true';ambientStatus.textContent=window.saranamText("Sound is off.");
 }
 ambientButton.addEventListener('click',()=>ambientEnabled?stopAmbience():startAmbience());
 ambientVolume.addEventListener('input',()=>{if(ambientMaster&&ambientEnabled)ambientMaster.gain.setTargetAtTime((Number(ambientVolume.value)/100)*.65,ambientContext.currentTime,.025)});
@@ -234,6 +235,6 @@ window.addEventListener('pagehide',()=>{if(ambientEnabled)stopAmbience()});
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&links.classList.contains('open')){menuToggle.click();menuToggle.focus()}});
 
-{let count=0;const out=document.getElementById('practice-count'),add=document.getElementById('practice-add');function show(){out.value=count+' / 108';add.disabled=count===108}add.onclick=()=>{count=Math.min(count+1,108);show()};document.getElementById('practice-reset').onclick=()=>{count=0;show()};}
+{let count=0;const out=document.getElementById('practice-count'),add=document.getElementById('practice-add');function show(){out.value=window.saranamText("{n} / {total}",{n:count,total:108});add.disabled=count===108}add.onclick=()=>{count=Math.min(count+1,108);show()};document.getElementById('practice-reset').onclick=()=>{count=0;show()};}
 
-window.addEventListener('saranam-ui-ready',()=>{renderDays();renderChants();updateGhoshaUI();syncVoice()});window.addEventListener('saranam-language-change',()=>{useTelugu=document.documentElement.lang==='te';stopGhosha();renderChants();syncVoice();renderDays()});
+window.addEventListener('saranam-ui-ready',()=>{renderDays();renderChants();updateGhoshaUI();syncVoice()});window.addEventListener('saranam-language-change',()=>{useTelugu=document.documentElement.lang==='te';stopGhosha();renderChants();updateGhoshaUI();syncVoice();renderDays()});

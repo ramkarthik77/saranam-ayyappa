@@ -45,7 +45,7 @@ jobs:
           echo "Cloudflare production branch: $branch"
           test "$branch" = main
       - name: Validate homepage JavaScript
-        run: node --check script.js && node --check sw.js
+        run: node --check script.js && node --check sw.js && node scripts/check-i18n.js
       - name: Prepare static distribution
         run: |
           mkdir -p _site/assets
