@@ -74,20 +74,20 @@ const storageKey='saranam-completed-days-v1';let completed=[];try{let saved=JSON
 const trackerStatus=document.getElementById('tracker-status'), undoProgress=document.getElementById('undo-progress'), startInput=document.getElementById('journey-start'), noteInput=document.getElementById('journey-note');
 let backup=null,undoTimer,detail={start:'',notes:{}};
 function getLocal(k){try{return localStorage.getItem(k)}catch{return null}}
-function setLocal(k,v){try{localStorage.setItem(k,v)}catch{trackerStatus.textContent='Storage unavailable. Export a backup before leaving.'}}
+function setLocal(k,v){try{localStorage.setItem(k,v)}catch{trackerStatus.textContent=window.saranamText("Storage unavailable. Export a backup before leaving.")}}
 try{const raw=JSON.parse(getLocal('saranam-tracker-details-v1'));if(raw&&typeof raw.start==='string'&&raw.notes&&typeof raw.notes==='object')detail=raw}catch{}
 const dayNumber=()=>{if(!detail.start)return 0;const d=new Date();return 1+Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-Date.parse(detail.start))/86400000)};
 function saveProgress(){setLocal(storageKey,JSON.stringify(completed));setLocal('saranam-tracker-details-v1',JSON.stringify(detail))}
-function renderDetails(){startInput.value=detail.start;noteInput.value=detail.notes[selected]||'';const d=dayNumber();document.getElementById('journey-today').textContent=d>=1&&d<=41?'Today: day '+d:d<1&&detail.start?'Not started':d>41?'Beyond day 41':'';let best=0,run=0;for(let n=1;n<=41;n++){run=completed.includes(n)?run+1:0;best=Math.max(run,best)}document.getElementById('journey-streak').textContent='Longest reflection streak: '+best+' days'}
+function renderDetails(){startInput.value=detail.start;noteInput.value=detail.notes[selected]||'';const d=dayNumber();document.getElementById('journey-today').textContent=d>=1&&d<=41?window.saranamText('Today: day {n}',{n:d}):d<1&&detail.start?window.saranamText("Not started"):d>41?window.saranamText("Beyond day 41"):'';let best=0,run=0;for(let n=1;n<=41;n++){run=completed.includes(n)?run+1:0;best=Math.max(run,best)}document.getElementById('journey-streak').textContent=window.saranamText('Longest reflection streak: {n} days',{n:best})}
 startInput.onchange=()=>{detail.start=startInput.value;const d=dayNumber();if(d>=1&&d<=41)selected=d;saveProgress();renderDays()};
 noteInput.oninput=()=>{detail.notes[selected]=noteInput.value;saveProgress()};
 undoProgress.onclick=()=>{if(backup){completed=backup;backup=null;undoProgress.hidden=true;saveProgress();renderDays()}};
 document.getElementById('export-progress').onclick=()=>{const url=URL.createObjectURL(new Blob([JSON.stringify({version:1,completed,start:detail.start,notes:detail.notes})],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='saranam-progress.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
-document.getElementById('import-progress').onchange=async ev=>{const input=ev.target,f=input.files[0];if(!f)return;try{if(f.size>60000)throw Error();const x=JSON.parse(await f.text());if(x.version!==1||!Array.isArray(x.completed)||x.completed.length>41||!x.completed.every(n=>Number.isInteger(n)&&n>=1&&n<=41)||typeof x.start!=='string'||(x.start&&(!/^\d{4}-\d{2}-\d{2}$/.test(x.start)||!Number.isFinite(Date.parse(x.start))))||!x.notes||Array.isArray(x.notes)||typeof x.notes!=='object'||Object.entries(x.notes).some(([k,v])=>!/^([1-9]|[1-3][0-9]|4[01])$/.test(k)||typeof v!=='string'||v.length>1000))throw Error();if(confirm('Replace this device’s tracker progress with this backup?')){completed=[...new Set(x.completed)];detail={start:x.start,notes:x.notes};trackerStatus.textContent='Backup imported.';saveProgress();renderDays()}}catch{trackerStatus.textContent='Invalid SARANAM progress backup. Nothing was changed.'}finally{input.value=''}};
+document.getElementById('import-progress').onchange=async ev=>{const input=ev.target,f=input.files[0];if(!f)return;try{if(f.size>60000)throw Error();const x=JSON.parse(await f.text());if(x.version!==1||!Array.isArray(x.completed)||x.completed.length>41||!x.completed.every(n=>Number.isInteger(n)&&n>=1&&n<=41)||typeof x.start!=='string'||(x.start&&(!/^\d{4}-\d{2}-\d{2}$/.test(x.start)||!Number.isFinite(Date.parse(x.start))))||!x.notes||Array.isArray(x.notes)||typeof x.notes!=='object'||Object.entries(x.notes).some(([k,v])=>!/^([1-9]|[1-3][0-9]|4[01])$/.test(k)||typeof v!=='string'||v.length>1000))throw Error();if(confirm(window.saranamText("Replace this device’s tracker progress with this backup?"))){completed=[...new Set(x.completed)];detail={start:x.start,notes:x.notes};trackerStatus.textContent=window.saranamText("Backup imported.");saveProgress();renderDays()}}catch{trackerStatus.textContent=window.saranamText("Invalid SARANAM progress backup. Nothing was changed.")}finally{input.value=''}};
 {const d=dayNumber();if(d>=1&&d<=41)selected=d;}
-try{localStorage.setItem('saranam-storage-test','1');localStorage.removeItem('saranam-storage-test')}catch{trackerStatus.textContent='Storage unavailable. Export a backup before leaving.'}
-function renderDays(){renderDetails();dayGrid.innerHTML=reflections.map((r,i)=>{const d=i+1;return `<button class="day ${selected===d?'selected':''} ${dayNumber()===d?'journey-today':''} ${completed.includes(d)?'done':''}" data-day="${d}" aria-label="Day ${d}: ${r[1]}${completed.includes(d)?', complete':''}" aria-pressed="${selected===d}">${String(d).padStart(2,'0')}</button>`}).join('');dayGrid.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{selected=Number(b.dataset.day);renderDays()}));const r=reflections[selected-1];document.getElementById('reflection-day').textContent=`DAY ${String(selected).padStart(2,'0')} · ${r[0].toUpperCase()}`;document.getElementById('reflection-title').textContent=r[1];document.getElementById('reflection-body').textContent=r[2];document.getElementById('completed-count').textContent=completed.length;document.getElementById('mark-day').innerHTML=completed.includes(selected)?'Mark as not completed <span>↺</span>':'Mark day complete <span>✓</span>'}
-document.getElementById('mark-day').addEventListener('click',()=>{completed=completed.includes(selected)?completed.filter(d=>d!==selected):[...completed,selected].sort((a,b)=>a-b);saveProgress();renderDays()});document.getElementById('reset-progress').addEventListener('click',()=>{if(confirm('Reset all 41-day reflection progress on this device?')){backup=[...completed];undoProgress.hidden=false;clearTimeout(undoTimer);undoTimer=setTimeout(()=>{backup=null;undoProgress.hidden=true},10000);completed=[];saveProgress();renderDays()}});renderDays();
+try{localStorage.setItem('saranam-storage-test','1');localStorage.removeItem('saranam-storage-test')}catch{trackerStatus.textContent=window.saranamText("Storage unavailable. Export a backup before leaving.")}
+function renderDays(){renderDetails();dayGrid.innerHTML=reflections.map((r,i)=>{const d=i+1;return `<button class="day ${selected===d?'selected':''} ${dayNumber()===d?'journey-today':''} ${completed.includes(d)?'done':''}" data-day="${d}" aria-label="Day ${d}: ${r[1]}${completed.includes(d)?', complete':''}" aria-pressed="${selected===d}">${String(d).padStart(2,'0')}</button>`}).join('');dayGrid.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{selected=Number(b.dataset.day);renderDays()}));const r=reflections[selected-1];document.getElementById('reflection-day').textContent=`DAY ${String(selected).padStart(2,'0')} · ${r[0].toUpperCase()}`;document.getElementById('reflection-title').textContent=r[1];document.getElementById('reflection-body').textContent=r[2];document.getElementById('completed-count').textContent=completed.length;document.getElementById('mark-day').innerHTML=completed.includes(selected)?window.saranamText("Mark as not completed")+' <span>↺</span>':window.saranamText("Mark day complete")+' <span>✓</span>'}
+document.getElementById('mark-day').addEventListener('click',()=>{completed=completed.includes(selected)?completed.filter(d=>d!==selected):[...completed,selected].sort((a,b)=>a-b);saveProgress();renderDays()});document.getElementById('reset-progress').addEventListener('click',()=>{if(confirm(window.saranamText("Reset all 41-day reflection progress on this device?"))){backup=[...completed];undoProgress.hidden=false;clearTimeout(undoTimer);undoTimer=setTimeout(()=>{backup=null;undoProgress.hidden=true},10000);completed=[];saveProgress();renderDays()}});renderDays();
 const chants=[
  {en:'Swamiye Saranam Ayyappa',te:'స్వామియే శరణం అయ్యప్ప',meaning:'Lord Ayyappa, I seek refuge in you.'},
  {en:'Hariharasuthane Saranam Ayyappa',te:'హరిహరసుతనే శరణం అయ్యప్ప',meaning:'Refuge in Ayyappa, son of Hari and Hara.'},
@@ -105,9 +105,9 @@ const ghoshaSpeed=document.getElementById('ghosha-speed');
 let ghoshaCurrent=-1,ghoshaRunning=false,ghoshaPaused=false,ghoshaSession=0;
 const speechAvailable='speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
 function voiceFor(){return speechAvailable?window.speechSynthesis.getVoices().find(v=>(useTelugu?/^te(?:[-_]|$)/i:/^en(?:[-_]|$)/i).test(v.lang)):null}
-function syncVoice(){const ok=!!voiceFor();ghoshaPlay.disabled=!ok;chantItems.querySelectorAll('button[data-chant]').forEach(b=>b.disabled=!ok);if(!ghoshaRunning)voiceNote.textContent=ok?'Device voice available. Pronunciation may vary.':useTelugu?'ఈ పరికరంలో తెలుగు వాయిస్ అందుబాటులో లేదు. / No Telugu voice available. Read the invocations below.':'No compatible device voice available. Read the invocations below.';}
+function syncVoice(){const ok=!!voiceFor();ghoshaPlay.disabled=!ok;chantItems.querySelectorAll('button[data-chant]').forEach(b=>b.disabled=!ok);if(!ghoshaRunning)voiceNote.textContent=ok?window.saranamText("Device voice available. Pronunciation may vary."):useTelugu?'ఈ పరికరంలో తెలుగు వాయిస్ అందుబాటులో లేదు. / No Telugu voice available. Read the invocations below.':'No compatible device voice available. Read the invocations below.';}
 function renderChants(){
- chantItems.innerHTML=chants.map((c,i)=>`<div class="chant-item ${i===ghoshaCurrent?'ghosha-active':''}" id="ghosha-line-${i}" data-line="${i}"><span class="number">${String(i+1).padStart(2,'0')}</span><span class="chant-main">${useTelugu?c.te:c.en}</span><span class="chant-meaning">${useTelugu?c.en+' · ':''}${c.meaning}</span><button class="chant-listen" type="button" data-chant="${i}" aria-label="Play invocation ${i+1}">▶ Listen</button></div>`).join('');
+ chantItems.innerHTML=chants.map((c,i)=>`<div class="chant-item ${i===ghoshaCurrent?'ghosha-active':''}" id="ghosha-line-${i}" data-line="${i}"><span class="number">${String(i+1).padStart(2,'0')}</span><span class="chant-main">${useTelugu?c.te:c.en}</span><span class="chant-meaning">${useTelugu?c.en+' · ':''}${c.meaning}</span><button class="chant-listen" type="button" data-chant="${i}" aria-label="${window.saranamText('Play invocation {n}',{n:i+1})}">${window.saranamText('▶ Listen')}</button></div>`).join('');
  document.getElementById('language-toggle').setAttribute('aria-pressed',String(useTelugu));
 }
 function updateGhoshaUI(){
@@ -116,15 +116,15 @@ function updateGhoshaUI(){
    el.classList.toggle('ghosha-active',active);
    el.setAttribute('aria-current',active?'true':'false');
    const b=el.querySelector('.chant-listen');
-   if(b)b.textContent=active?'♫ Playing':'▶ Listen';
+   if(b)b.textContent=active?window.saranamText("♫ Playing"):window.saranamText("▶ Listen");
  });
  const position=ghoshaCurrent>=0?ghoshaCurrent+1:0;
  ghoshaCounter.textContent=String(Math.max(1,position)).padStart(2,'0')+' / '+String(chants.length).padStart(2,'0');
  const completed=ghoshaRunning?Math.max(0,ghoshaCurrent):ghoshaCurrent<0?0:ghoshaCurrent+1;
  ghoshaProgress.setAttribute('aria-valuenow',String(completed));
  ghoshaFill.style.width=(completed/chants.length*100)+'%';
- ghoshaPlay.querySelector('span').textContent=ghoshaRunning?(ghoshaPaused?'Resume chanting':'Pause chanting'):'Play all invocations';
- ghoshaPlay.setAttribute('aria-label',ghoshaRunning?(ghoshaPaused?'Resume chanting':'Pause chanting'):'Play all Sarana Ghosha invocations');
+ ghoshaPlay.querySelector('span').textContent=ghoshaRunning?(ghoshaPaused?window.saranamText("Resume chanting"):window.saranamText("Pause chanting")):window.saranamText("Play all invocations");
+ ghoshaPlay.setAttribute('aria-label',ghoshaRunning?(ghoshaPaused?window.saranamText("Resume chanting"):window.saranamText("Pause chanting")):window.saranamText("Play all Sarana Ghosha invocations"));
  ghoshaPlay.firstChild.textContent=ghoshaRunning?(ghoshaPaused?'▶ ':'Ⅱ '):'▶ ';
 }
 function stopGhosha(message){
@@ -138,7 +138,7 @@ function speakGhoshaLine(index,session,playAll){
  if(index>=chants.length){
    ghoshaRunning=false;ghoshaPaused=false;ghoshaCurrent=chants.length-1;
    updateGhoshaUI();ghoshaFill.style.width='100%';ghoshaProgress.setAttribute('aria-valuenow',String(chants.length));
-   voiceNote.textContent='All six invocations complete. Swamiye Saranam Ayyappa.';
+   voiceNote.textContent=window.saranamText("All six invocations complete. Swamiye Saranam Ayyappa.");
    return;
  }
  ghoshaCurrent=index;updateGhoshaUI();
@@ -152,12 +152,12 @@ function speakGhoshaLine(index,session,playAll){
  utterance.onerror=(ev)=>{
    if(session!==ghoshaSession||ev.error==='canceled'||ev.error==='interrupted')return;
    ghoshaRunning=false;ghoshaPaused=false;updateGhoshaUI();
-   voiceNote.textContent='Voice playback failed or the required language voice is unavailable on this device.';
+   voiceNote.textContent=window.saranamText("Voice playback failed or the required language voice is unavailable on this device.");
  };
  window.speechSynthesis.speak(utterance);
 }
 function beginGhosha(index,playAll){
- if(!speechAvailable){voiceNote.textContent='Speech synthesis is unavailable in this browser.';return}
+ if(!speechAvailable){voiceNote.textContent=window.saranamText("Speech synthesis is unavailable in this browser.");return}
  stopGhosha();
  ghoshaRunning=true;ghoshaPaused=false;const session=ghoshaSession;
  speakGhoshaLine(index,session,playAll);
@@ -168,24 +168,24 @@ ghoshaPlay.addEventListener('click',()=>{
  else{window.speechSynthesis.pause();ghoshaPaused=true}
  updateGhoshaUI();
 });
-ghoshaStop.addEventListener('click',()=>stopGhosha('Playback stopped.'));
+ghoshaStop.addEventListener('click',()=>stopGhosha(window.saranamText("Playback stopped.")));
 ghoshaSpeed.addEventListener('change',()=>{if(ghoshaRunning){const line=ghoshaCurrent;beginGhosha(line,true)}});
 chantItems.addEventListener('click',event=>{
  const button=event.target.closest('button[data-chant]');if(!button)return;
  const index=Number(button.dataset.chant);if(index>=0&&index<chants.length)beginGhosha(index,false);
 });
 document.getElementById('language-toggle').addEventListener('click',()=>{
- stopGhosha('Language changed. Press Play to hear the selected language.');
+ stopGhosha(window.saranamText("Language changed. Press Play to hear the selected language."));
  useTelugu=!useTelugu;try{localStorage.setItem('saranam-language',useTelugu?'te':'en')}catch{}renderChants();updateGhoshaUI();syncVoice();
 });
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&ghoshaRunning&&!ghoshaPaused){window.speechSynthesis.pause();ghoshaPaused=true;updateGhoshaUI()}});
 window.addEventListener('pagehide',()=>{if(ghoshaRunning)stopGhosha()});
 renderChants();updateGhoshaUI();syncVoice();
-if(speechAvailable){window.speechSynthesis.addEventListener('voiceschanged',syncVoice);document.addEventListener('visibilitychange',()=>{if(document.hidden&&ghoshaRunning)stopGhosha('Playback stopped.')});const section=chantItems.closest('section');if(section&&'IntersectionObserver' in window)new IntersectionObserver(([entry])=>{if(!entry.isIntersecting&&ghoshaRunning)stopGhosha('Playback stopped.')}).observe(section);}
+if(speechAvailable){window.speechSynthesis.addEventListener('voiceschanged',syncVoice);document.addEventListener('visibilitychange',()=>{if(document.hidden&&ghoshaRunning)stopGhosha(window.saranamText("Playback stopped."))});const section=chantItems.closest('section');if(section&&'IntersectionObserver' in window)new IntersectionObserver(([entry])=>{if(!entry.isIntersecting&&ghoshaRunning)stopGhosha(window.saranamText("Playback stopped."))}).observe(section);}
 
 const nav=document.getElementById('nav'),scrollBar=document.getElementById('scroll-progress');function onScroll(){nav.classList.toggle('scrolled',window.scrollY>40);scrollBar.style.width=`${Math.min(100,(window.scrollY/(document.documentElement.scrollHeight-innerHeight))*100)}%`}window.addEventListener('scroll',onScroll,{passive:true});onScroll();
 const menuToggle=document.getElementById('menu-toggle'),links=document.getElementById('nav-links');menuToggle.addEventListener('click',()=>{let open=links.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(open));menuToggle.textContent=open?'✕':'☰'});links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');menuToggle.textContent='☰'}));
-const heroVideo=document.getElementById('hero-video'),closingVideo=document.getElementById('closing-video'),motionButton=document.getElementById('motion-toggle');let motionOn=!window.matchMedia('(prefers-reduced-motion: reduce)').matches;function applyMotion(){[heroVideo,closingVideo].forEach(v=>{if(motionOn){if(v===heroVideo||v.dataset.visible==='true'){const src=v.querySelector('[data-src]');if(src&&!src.hasAttribute('src')){src.src=src.dataset.src;v.load()}v.play().catch(()=>{})}}else v.pause()});motionButton.textContent=motionOn?'Ⅱ':'▶';motionButton.setAttribute('aria-label',motionOn?'Pause background video':'Play background video')}motionButton.addEventListener('click',()=>{motionOn=!motionOn;applyMotion()});const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{closingVideo.dataset.visible=String(entry.isIntersecting);if(motionOn&&entry.isIntersecting)applyMotion();else closingVideo.pause()})},{threshold:.1});observer.observe(closingVideo);applyMotion();
+const heroVideo=document.getElementById('hero-video'),closingVideo=document.getElementById('closing-video'),motionButton=document.getElementById('motion-toggle');let motionOn=!window.matchMedia('(prefers-reduced-motion: reduce)').matches;function applyMotion(){[heroVideo,closingVideo].forEach(v=>{if(motionOn){if(v===heroVideo||v.dataset.visible==='true'){const sources=[...v.querySelectorAll('[data-src]:not([src])')];if(sources.length){sources.forEach(src=>src.src=src.dataset.src);v.load()}v.play().catch(()=>{})}}else v.pause()});motionButton.textContent=motionOn?'Ⅱ':'▶';motionButton.setAttribute('aria-label',motionOn?window.saranamText("Pause background video"):window.saranamText("Play background video"))}motionButton.addEventListener('click',()=>{motionOn=!motionOn;applyMotion()});const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{closingVideo.dataset.visible=String(entry.isIntersecting);if(motionOn&&entry.isIntersecting)applyMotion();else closingVideo.pause()})},{threshold:.1});observer.observe(closingVideo);applyMotion();
 
 /* Audio Sanctuary: original browser-synthesized bells, no media downloads or autoplay. */
 const ambientButton=document.getElementById('ambient-toggle');
@@ -206,7 +206,7 @@ function soundBell(){
 }
 async function startAmbience(){
   const AudioContextClass=window.AudioContext||window.webkitAudioContext;
-  if(!AudioContextClass){ambientStatus.textContent='This browser does not support synthesized audio.';return}
+  if(!AudioContextClass){ambientStatus.textContent=window.saranamText("This browser does not support synthesized audio.");return}
   try{
     if(!ambientContext||ambientContext.state==='closed'){
       ambientContext=new AudioContextClass();
@@ -216,8 +216,8 @@ async function startAmbience(){
     ambientMaster.gain.value=(Number(ambientVolume.value)/100)*.65;
     ambientEnabled=true;soundBell();ambientTimer=window.setInterval(soundBell,10500);
     ambientButton.setAttribute('aria-pressed','true');ambientButton.innerHTML='<span aria-hidden="true">Ⅱ</span> Pause peaceful ambience';
-    ambientStatus.textContent='Playing gentle synthesized temple-inspired bells. You can pause at any time.';
-  }catch(e){ambientEnabled=false;ambientStatus.textContent='Audio could not start. Please check your browser sound settings.'}
+    ambientStatus.textContent=window.saranamText("Playing gentle synthesized temple-inspired bells. You can pause at any time.");
+  }catch(e){ambientEnabled=false;ambientStatus.textContent=window.saranamText("Audio could not start. Please check your browser sound settings.")}
 }
 function stopAmbience(){
   ambientEnabled=false;
@@ -225,7 +225,7 @@ function stopAmbience(){
   if(ambientMaster&&ambientContext){ambientMaster.gain.setTargetAtTime(0,ambientContext.currentTime,.06)}
   ambientButton.setAttribute('aria-pressed','false');
   ambientButton.innerHTML='<span aria-hidden="true">♫</span> Play peaceful ambience';
-  ambientStatus.textContent='Sound is off.';
+  ambientStatus.textContent=window.saranamText("Sound is off.");
 }
 ambientButton.addEventListener('click',()=>ambientEnabled?stopAmbience():startAmbience());
 ambientVolume.addEventListener('input',()=>{if(ambientMaster&&ambientEnabled)ambientMaster.gain.setTargetAtTime((Number(ambientVolume.value)/100)*.65,ambientContext.currentTime,.025)});
@@ -235,3 +235,5 @@ window.addEventListener('pagehide',()=>{if(ambientEnabled)stopAmbience()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&links.classList.contains('open')){menuToggle.click();menuToggle.focus()}});
 
 {let count=0;const out=document.getElementById('practice-count'),add=document.getElementById('practice-add');function show(){out.value=count+' / 108';add.disabled=count===108}add.onclick=()=>{count=Math.min(count+1,108);show()};document.getElementById('practice-reset').onclick=()=>{count=0;show()};}
+
+window.addEventListener('saranam-ui-ready',()=>{renderDays();renderChants();updateGhoshaUI();syncVoice()});window.addEventListener('saranam-language-change',()=>{useTelugu=document.documentElement.lang==='te';stopGhosha();renderChants();syncVoice();renderDays()});

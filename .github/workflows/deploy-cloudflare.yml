@@ -50,8 +50,9 @@ jobs:
         run: |
           mkdir -p _site/assets
           cp index.html ayyappa-guide.html episode-01.html styles.css script.js robots.txt sitemap.xml 404.html _headers manifest.webmanifest sw.js saranam-icon.svg _site/
-          cp assets/ayyappa-forest.mp4 assets/hero-poster.jpg _site/assets/
+          cp assets/ayyappa-forest.mp4 assets/hero-poster.jpg assets/ayyappa-forest.webm assets/share-1200x630.jpg _site/assets/
           cp -R assets/story _site/assets/
+          cp -R i18n _site/
           sed -i "s/__SARANAM_RELEASE__/$GITHUB_SHA/g" _site/sw.js
       - name: Deploy to Cloudflare Pages
         id: deploy
