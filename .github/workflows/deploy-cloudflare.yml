@@ -39,6 +39,8 @@ jobs:
             echo "Cloudflare project lookup failed (HTTP ${status}). Check token permissions and account ID."
             exit 1
           fi
+      - name: Validate homepage JavaScript
+        run: node --check script.js
       - name: Prepare static distribution
         run: |
           mkdir -p _site/assets
