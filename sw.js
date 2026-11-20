@@ -1,5 +1,5 @@
 const cacheName = 'saranam-v__SARANAM_RELEASE__';
-const pages = new Map([['/', '/'], ['/index.html', '/'], ['/ayyappa-guide', '/ayyappa-guide'], ['/ayyappa-guide.html', '/ayyappa-guide'], ['/episode-01', '/episode-01'], ['/episode-01.html', '/episode-01']]);
+const pages = new Map([['/', '/'], ['/index.html', '/'], ['/ayyappa-guide', '/ayyappa-guide'], ['/ayyappa-guide.html', '/ayyappa-guide'], ['/episode-01', '/episode-01'], ['/episode-01.html', '/episode-01'], ['/prayers','/prayers.html'], ['/prayers.html','/prayers.html']]);
 const assets = ['/styles.css','/script.js','/assets/hero-poster.jpg','/assets/ayyappa-forest.mp4','/assets/ayyappa-forest.webm','/assets/share-1200x630.jpg','/i18n/en.json','/i18n/te.json','/i18n/ui.js',...Array.from({length:5},(_,i)=>'/assets/story/episode-01-'+(i+1)+'.webp')];
 self.addEventListener('install', event => event.waitUntil((async()=>{
   const cache=await caches.open(cacheName);
