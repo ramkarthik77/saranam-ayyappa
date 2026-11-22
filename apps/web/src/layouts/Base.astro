@@ -23,6 +23,7 @@ const canonical=Astro.url.href;
   <link rel="stylesheet" href="/styles/site.css" />
   <title>{title} · SARANAM</title>
   <script src="/scripts/ui.js" is:inline defer></script>
+  {section==="deeksha" && <script src="/scripts/deeksha.js" is:inline defer></script>}
  </head>
  <body data-page={section??"home"}>
   <a class="skip" href="#main">{lang==="te"?"ప్రధాన విషయానికి వెళ్లండి":"Skip to content"}</a>
