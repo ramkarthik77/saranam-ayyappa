@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "product": "SARANAM",
+  "release": "v1.0",
+  "designBaseline": "Gate A approved, Q1–Q208",
+  "status": "GATE_B_IN_PROGRESS_GATE_C_BLOCKED",
+  "gates": [
+    {
+      "id": "catalog",
+      "description": "Reconcile 28 candidate catalog entries",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "sarana108",
+      "description": "Verified complete 108-name Sarana Ghosha",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "morning",
+      "description": "Reviewed complete morning pooja journey",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "evening",
+      "description": "Reviewed complete evening pooja journey",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "deeksha",
+      "description": "Reviewed daily Deeksha and working 41-day tracker",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "bhiksha",
+      "description": "Reviewed Bhiksha guide and prayer sequence",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "text-rights",
+      "description": "Verified hosted text and translation rights",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "visual-rights",
+      "description": "Verified published media rights",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "recordings",
+      "description": "Three human-licensed device-tested tracks",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "bilingual",
+      "description": "Reviewed complete English and Telugu interfaces",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "search",
+      "description": "40 curated search cases at >=90% top-three",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "offline",
+      "description": "Disconnected-device essential reading",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "accessibility",
+      "description": "WCAG 2.2 AA plus Telugu reader tests",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "performance",
+      "description": "Good Core Web Vitals targets",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "security",
+      "description": "Restricted editors, reports, and credentials",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "migration",
+      "description": "Old-origin export and new-origin import",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "approval",
+      "description": "Protected production environment and owner approval",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "rollback",
+      "description": "Validated compatible release rollback",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    },
+    {
+      "id": "privacy",
+      "description": "Local-first privacy and bounded analytics",
+      "status": "pending",
+      "evidenceRefs": [],
+      "ownerApproved": false,
+      "reviewedAt": null
+    }
+  ],
+  "catalogEntries": [],
+  "recordings": []
+}
