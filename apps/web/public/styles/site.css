@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
-:root{--bg:#0c1511;--bg2:#112019;--surface:#16231c;--surface2:#1a2a21;--gold:#ddbd84;--gold2:#b88e55;--cream:#f5ead5;--muted:#b2bdaf;--line:rgba(230,207,165,.16);--font:'DM Sans','Noto Sans Telugu',sans-serif;--serif:'Playfair Display','Noto Sans Telugu',serif;color-scheme:dark;font-family:var(--font);background:var(--bg);scroll-behavior:smooth}
+:root{--bg:#0c1511;--bg2:#112019;--surface:#16231c;--surface2:#1a2a21;--gold:#ddbd84;--gold2:#b88e55;--cream:#f5ead5;--muted:#b2bdaf;--line:rgba(230,207,165,.16);--font:system-ui,-apple-system,'Noto Sans Telugu',sans-serif;--serif:Georgia,'Noto Serif Telugu',serif;color-scheme:dark;font-family:var(--font);background:var(--bg);scroll-behavior:smooth}
 *{box-sizing:border-box}
 body{margin:0;color:var(--cream);background:radial-gradient(ellipse at 80% 3%,rgba(74,96,64,.17),transparent 35%),#0c1511;font-size:16px;line-height:1.55;padding-bottom:76px;min-height:100vh}
 [lang=te] body{line-height:1.75}
