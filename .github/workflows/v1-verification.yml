@@ -1,4 +1,4 @@
-name: SARANAM v1 evidence checks
+name: SARANAM v1 evidence and preview checks
 on:
   pull_request:
     branches: [main]
@@ -13,9 +13,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Run readiness tests
+      - name: Test release evidence checks
         run: node --test scripts/check-v1-readiness.test.mjs
-      - name: Display release blockers
+      - name: Show release blockers
         run: node scripts/check-v1-readiness.mjs --report
+      - name: Install preview dependencies
+        working-directory: apps/web
+        run: npm install --no-audit --no-fund
+      - name: Build static preview (does not deploy)
+        working-directory: apps/web
+        run: npm run build
+      - name: Validate preview route inventory
+        working-directory: apps/web
+        run: npm run test:output
       - name: State deployment policy
-        run: echo "No deployments from this workflow. Gate C requires strict verification and owner-approved production release."
+        run: echo "Gate C is blocked. This workflow NEVER deploys to production."

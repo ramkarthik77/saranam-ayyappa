@@ -1,0 +1,152 @@
+[
+  {
+    "id": "pooja",
+    "title": "Pooja",
+    "href": "/en/pooja/",
+    "aliases": [
+      "pooja",
+      "puja",
+      "పూజ"
+    ],
+    "status": "navigation"
+  },
+  {
+    "id": "prayers",
+    "title": "Prayers",
+    "href": "/en/prayers/",
+    "aliases": [
+      "stotra",
+      "sarana",
+      "sarana ghosha",
+      "mantra",
+      "స్తోత్రాలు",
+      "శరణ ఘోష",
+      "ప్రార్థనలు"
+    ],
+    "status": "navigation"
+  },
+  {
+    "id": "deeksha",
+    "title": "Deeksha",
+    "href": "/en/deeksha/",
+    "aliases": [
+      "deeksha",
+      "diksha",
+      "mandala",
+      "41 days",
+      "దీక్ష"
+    ],
+    "status": "navigation"
+  },
+  {
+    "id": "learn",
+    "title": "Learn",
+    "href": "/en/learn/",
+    "aliases": [
+      "ayyappa",
+      "story",
+      "manikandan",
+      "అయ్యప్ప"
+    ],
+    "status": "navigation"
+  },
+  {
+    "id": "pilgrimage",
+    "title": "Pilgrimage",
+    "href": "/en/pilgrimage/",
+    "aliases": [
+      "sabarimala",
+      "sabarimala pilgrimage",
+      "శబరిమల",
+      "యాత్ర"
+    ],
+    "status": "navigation"
+  },
+  {
+    "id": "listen",
+    "title": "Listen",
+    "href": "/en/listen/",
+    "aliases": [
+      "audio",
+      "bhajans",
+      "listen",
+      "భజనలు"
+    ],
+    "status": "navigation"
+  },
+  {
+    "id": "pooja",
+    "title": "పూజ",
+    "href": "/te/pooja/",
+    "aliases": [
+      "pooja",
+      "puja",
+      "పూజ"
+    ],
+    "status": "navigation"
+  },
+  {
+    "id": "prayers",
+    "title": "ప్రార్థనలు",
+    "href": "/te/prayers/",
+    "aliases": [
+      "stotra",
+      "sarana",
+      "sarana ghosha",
+      "mantra",
+      "స్తోత్రాలు",
+      "శరణ ఘోష",
+      "ప్రార్థనలు"
+    ],
+    "status": "navigation"
+  },
+  {
+    "id": "deeksha",
+    "title": "దీక్ష",
+    "href": "/te/deeksha/",
+    "aliases": [
+      "deeksha",
+      "diksha",
+      "mandala",
+      "41 days",
+      "దీక్ష"
+    ],
+    "status": "navigation"
+  },
+  {
+    "id": "learn",
+    "title": "తెలుసుకోండి",
+    "href": "/te/learn/",
+    "aliases": [
+      "ayyappa",
+      "story",
+      "manikandan",
+      "అయ్యప్ప"
+    ],
+    "status": "navigation"
+  },
+  {
+    "id": "pilgrimage",
+    "title": "యాత్ర",
+    "href": "/te/pilgrimage/",
+    "aliases": [
+      "sabarimala",
+      "sabarimala pilgrimage",
+      "శబరిమల",
+      "యాత్ర"
+    ],
+    "status": "navigation"
+  },
+  {
+    "id": "listen",
+    "title": "వినండి",
+    "href": "/te/listen/",
+    "aliases": [
+      "audio",
+      "bhajans",
+      "listen",
+      "భజనలు"
+    ],
+    "status": "navigation"
+  }
+]
