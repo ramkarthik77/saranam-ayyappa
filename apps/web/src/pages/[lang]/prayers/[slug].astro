@@ -1,0 +1,50 @@
+---
+import Base from "../../../../layouts/Base.astro";
+import {approvedPrayers,forLanguage,isFallback,type Prayer} from "../../../../lib/prayers";
+import {translations,type Locale} from "../../../../lib/site";
+export function getStaticPaths(){
+ return approvedPrayers.flatMap((prayer:Prayer)=>
+  (["en","te"] as Locale[]).map(lang=>({params:{lang,slug:prayer.slug},props:{prayer}})));
+}
+interface Props{prayer:Prayer}
+const prayer=Astro.props.prayer;
+const lang=Astro.params.lang as Locale;
+const edition=forLanguage(prayer,lang);
+const fallback=isFallback(prayer,lang);
+const label=translations[lang];
+---
+<Base lang={lang} title={prayer.title} section="prayers">
+ <section class="interior-hero shell">
+  <p class="eyebrow">{label.prayers} / {prayer.category}</p>
+  <h1>{prayer.title}</h1>
+  <p class="lead">{edition.tradition} · {edition.revision}</p>
+ </section>
+ <section class="shell content-section">
+  <article class="paper-card sacred-reader" aria-label={prayer.title}>
+   {fallback&&<div class="edition-notice" role="note">
+    {lang==="te"?"ఈ ప్రార్థన తెలుగు పాఠం ఇంకా ధృవీకరించబడలేదు. అందుబాటులో ఉన్న ధృవీకరించిన పాఠం చూపిస్తున్నాము.":"This prayer has no independently approved English edition. Showing the available reviewed edition."}
+   </div>}
+   <div class="reader-top">
+    <p class="eyebrow">{lang==="te"?"ధృవీకరించిన పాఠం":"Verified edition"} · {edition.language.toUpperCase()}</p>
+    <div class="reader-tools" aria-label={lang==="te"?"పాఠం పరిమాణం":"Reading size"}>
+     <button type="button" data-reader-size="-1" aria-label="Decrease text size">A−</button>
+     <button type="button" data-reader-size="1" aria-label="Increase text size">A+</button>
+    </div>
+   </div>
+   <div class="verses" lang={edition.language}>
+    {edition.verses.map(v=><section id={v.id} class="verse" aria-labelledby={`label-${v.id}`}>
+     <h2 id={`label-${v.id}`} class="verse-num">{v.id}</h2>
+     <p class="verse-text">{v.text}</p>
+     {v.transliteration&&<p class="verse-transliteration">{v.transliteration}</p>}
+     {v.meaning&&<p class="verse-meaning">{v.meaning}</p>}
+    </section>)}
+   </div>
+   <footer class="source-footer">
+    <h2>{lang==="te"?"మూలం మరియు సంచిక":"Source and edition"}</h2>
+    <p>{edition.sourceName} · {edition.tradition} · {edition.revision}</p>
+    <p>{edition.rightsSummary} · {edition.attribution}</p>
+    <a href={edition.sourceUrl} target="_blank" rel="noopener noreferrer">{lang==="te"?"మూలాన్ని చూడండి":"View source"} ↗</a>
+   </footer>
+  </article>
+ </section>
+</Base>
