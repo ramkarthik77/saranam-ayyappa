@@ -22,6 +22,9 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Check Deeksha and PWA scripts
         run: node --check apps/web/public/scripts/deeksha.js && node --check apps/web/public/scripts/ui.js && node --check apps/web/public/sw.js
+      - name: Validate rights-gated approved prayer data
+        working-directory: apps/web
+        run: node --test scripts/validate-approved-content.test.mjs && node scripts/validate-approved-content.mjs
       - name: Build static preview (does not deploy)
         working-directory: apps/web
         run: npm run build
