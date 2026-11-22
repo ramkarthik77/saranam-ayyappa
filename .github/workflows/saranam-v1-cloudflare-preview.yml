@@ -1,0 +1,99 @@
+name: SARANAM v1 Cloudflare preview only
+
+on:
+  push:
+    branches:
+      - build/saranam-v1-foundation-20261121
+    paths:
+      - "apps/web/**"
+      - "scripts/check-v1-readiness.mjs"
+      - "scripts/check-v1-readiness.test.mjs"
+      - ".github/workflows/saranam-v1-cloudflare-preview.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: saranam-v1-cloudflare-preview
+  cancel-in-progress: true
+
+jobs:
+  publish-preview:
+    if: github.ref == 'refs/heads/build/saranam-v1-foundation-20261121'
+    runs-on: ubuntu-latest
+    environment:
+      name: saranam-v1-preview
+      url: ${{ steps.deploy.outputs.deployment-url }}
+    steps:
+      - name: Checkout exact preview branch
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Confirm this is strictly a non-production preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = "build/saranam-v1-foundation-20261121"
+          test "$GITHUB_REF_NAME" != "main"
+          test "$GITHUB_EVENT_NAME" = push || test "$GITHUB_EVENT_NAME" = workflow_dispatch
+          echo "Publishing a noindex PREVIEW; not Gate C production."
+      - name: Validate evidence checker
+        run: |
+          node --test scripts/check-v1-readiness.test.mjs
+          node scripts/check-v1-readiness.mjs --report
+      - name: Check public-preview content is not approved sacred material
+        run: |
+          node -e "const fs=require('node:fs');const data=JSON.parse(fs.readFileSync('apps/web/content/approved-prayers.json'));if(!Array.isArray(data)||data.length!==0)process.exit(1);"
+      - name: Install and build isolated Astro site
+        working-directory: apps/web
+        env:
+          SARANAM_PREVIEW_SITE: https://saranam-v1-preview.saranam-ayyappa.pages.dev
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+          npm run test:output
+      - name: Verify preview is excluded from search indexing
+        run: |
+          grep -q 'noindex,nofollow' apps/web/dist/en/index.html
+          test -f apps/web/dist/_headers
+          grep -q 'X-Robots-Tag: noindex, nofollow' apps/web/dist/_headers
+          node --check apps/web/dist/scripts/ui.js
+          node --check apps/web/dist/scripts/deeksha.js
+          node --check apps/web/dist/scripts/reader.js
+      - name: Validate existing Cloudflare production branch remains main
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          test -n "$CF_TOKEN" && test -n "$CF_ACCOUNT"
+          curl -fsS --retry 3 --max-time 20 \
+            -H "Authorization: Bearer ${CF_TOKEN}" \
+            "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/pages/projects/saranam-ayyappa" > /tmp/saranam-preview-project.json
+          jq -e '.success == true and .result.production_branch == "main"' /tmp/saranam-preview-project.json >/dev/null
+          echo "Production branch remains main. Only non-main preview branch will be deployed."
+      - name: Deploy to Cloudflare Pages PREVIEW BRANCH (not main)
+        id: deploy
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy apps/web/dist --project-name=saranam-ayyappa --branch=saranam-v1-preview
+      - name: Verify published preview shell
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: |
+          set -euo pipefail
+          test -n "$DEPLOYMENT_URL"
+          for page in / /en/ /te/ /en/deeksha/ /te/prayers/; do
+            curl -fsSL --retry 5 --retry-delay 3 --max-time 30 "${DEPLOYMENT_URL%/}$page" -o /tmp/saranam-preview.html
+            grep -q 'noindex,nofollow' /tmp/saranam-preview.html
+            grep -q 'SARANAM' /tmp/saranam-preview.html
+          done
+          echo "SARANAM NON-PRODUCTION preview URL: $DEPLOYMENT_URL"
+          echo "Preview only. Gate C remains blocked."
