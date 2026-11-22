@@ -35,7 +35,7 @@ export function inspect(manifest) {
   if(eligible.length<3 || requiredAudioCategories.some(category=>!eligible.some(t=>t.category===category)))
     blockers.push("three-licensed-audio-categories");
   if(new Set(eligible.map(t=>t.id)).size!==eligible.length) errors.push("Duplicate audio IDs");
-  if(manifest.catalogEntries.length<28 || manifest.catalogEntries.some(e=>!e || !e.id || !e.sourceUrl || !e.reviewState))
+  if(manifest.catalogEntries.length<28 || manifest.catalogEntries.some(e=>!e || !e.id || !e.sourceUrl || e.reviewState!=="reviewed" || e.sourceVerified!==true || !e.reviewEvidenceRef))
     blockers.push("28-reconciled-catalog-candidates");
   if(new Set(manifest.catalogEntries.map(e=>e?.id)).size!==manifest.catalogEntries.length)
     errors.push("Duplicate catalog IDs");
