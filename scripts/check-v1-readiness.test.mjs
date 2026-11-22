@@ -31,8 +31,19 @@ test("complete synthetic test data demonstrates checker logic, not actual approv
   const m=copy();
   for(const g of m.gates){g.status="passed";g.ownerApproved=true;g.reviewedAt="2026-11-21T00:00:00Z";g.evidenceRefs=["fixture:"+g.id];}
   m.recordings=["chant","bhajan","devotional"].map(category=>({id:"fixture-"+category,category,humanRecorded:true,permission:{onSite:true,evidenceRef:"fixture:"+category},tests:{ios:true,android:true}}));
-  m.catalogEntries=Array.from({length:28},(_,i)=>({id:"fixture-"+i,sourceUrl:"https://example.org/"+i,reviewState:"reviewed"}));
+  m.catalogEntries=Array.from({length:28},(_,i)=>({id:"fixture-"+i,sourceUrl:"https://example.org/"+i,reviewState:"reviewed",sourceVerified:true,reviewEvidenceRef:"fixture:catalog-"+i}));
   const report=inspect(m);
   assert.equal(report.ready,true);
   assert.deepEqual(report.errors,[]);
+});
+
+test("candidate catalogs cannot satisfy the launch inventory",()=>{
+  const m=copy();
+  m.catalogEntries=Array.from({length:28},(_,i)=>({
+    id:"candidate-"+i,
+    sourceUrl:"https://example.org/"+i,
+    reviewState:"candidate",
+    sourceVerified:false
+  }));
+  assert.ok(inspect(m).blockers.includes("28-reconciled-catalog-candidates"));
 });
