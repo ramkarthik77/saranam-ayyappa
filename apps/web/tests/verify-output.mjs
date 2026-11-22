@@ -14,7 +14,7 @@ for(const file of pages){
   assert.ok(html.includes("SARANAM"),"Missing brand: "+file);
   assert.ok(html.includes('name="robots" content="noindex,nofollow"'),"Draft preview must not be indexed: "+file);
 }
-for(const file of ["sw.js","manifest.webmanifest","styles/site.css","scripts/ui.js","search-index.json"]){
+for(const file of ["sw.js","manifest.webmanifest","styles/site.css","scripts/ui.js","search-index.json","scripts/deeksha.js"]){
   assert.ok(fs.existsSync(path.join(root.pathname,file)),"Missing PWA asset: "+file);
 }
 console.log("SARANAM preview build verified:",pages.length,"HTML routes; no publication claims");
