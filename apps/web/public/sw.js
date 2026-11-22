@@ -1,6 +1,6 @@
 // Preview-only offline shell: does NOT claim verified essential prayer readiness.
 const CACHE="saranam-v1-preview-shell-v1";
-const CORE=["/","/en/","/te/","/styles/site.css","/scripts/ui.js","/manifest.webmanifest","/icon.svg"];
+const CORE=["/","/en/","/te/","/styles/site.css","/scripts/ui.js","/scripts/deeksha.js","/manifest.webmanifest","/icon.svg"];
 self.addEventListener("install",event=>event.waitUntil((async()=>{
   const cache=await caches.open(CACHE);
   await cache.addAll(CORE);
