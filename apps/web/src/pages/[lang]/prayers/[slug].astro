@@ -1,7 +1,7 @@
 ---
-import Base from "../../../../layouts/Base.astro";
-import {approvedPrayers,forLanguage,isFallback,type Prayer} from "../../../../lib/prayers";
-import {translations,type Locale} from "../../../../lib/site";
+import Base from "../../../layouts/Base.astro";
+import {approvedPrayers,forLanguage,isFallback,type Prayer} from "../../../lib/prayers";
+import {translations,type Locale} from "../../../lib/site";
 export function getStaticPaths(){
  return approvedPrayers.flatMap((prayer:Prayer)=>
   (["en","te"] as Locale[]).map(lang=>({params:{lang,slug:prayer.slug},props:{prayer}})));
