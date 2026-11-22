@@ -28,6 +28,33 @@ const practices=section==="pooja"?[
     <div id="search-results" aria-live="polite" class="search-results"></div>
   </div>
  </section>
+ :section==="deeksha"?
+ <section class="shell content-section" id="deeksha-app">
+  <div class="paper-card deeksha-panel">
+   <p class="eyebrow">41 DAYS · PRIVATE TO THIS DEVICE</p>
+   <p class="muted small">{lang==="te"?"మీరు స్వయంగా నమోదు చేసుకునే వ్యక్తిగత దీక్ష సమాచారం. ఇది మతపరమైన ధృవీకరణ కాదు.":"A personal, self-attested observance record. This does not certify religious compliance."}</p>
+   <form id="deeksha-start" class="cycle-form">
+    <div class="form-grid">
+     <label class="label">{lang==="te"?"ప్రారంభ తేదీ":"Deeksha start date"}<input type="date" name="start" required /></label>
+     <label class="label">{lang==="te"?"స్థిర సమయ మండలం":"Home time zone"}<input type="text" name="zone" required maxlength="64" placeholder="America/New_York"/></label>
+    </div>
+    <button class="cta primary" type="submit">{lang==="te"?"దీక్ష ప్రారంభించండి":"Start Deeksha"}</button>
+   </form>
+   <div id="deeksha-current"></div>
+   <section class="archive-section" aria-label={lang==="te"?"పాత దీక్షలు":"Past observances"}>
+    <h2>{lang==="te"?"పాత దీక్షలు":"Past observances"}</h2><div id="deeksha-archive"></div>
+   </section>
+   <section class="backup-tools" aria-label={lang==="te"?"బ్యాకప్":"Backup and import"}>
+    <h2>{lang==="te"?"వ్యక్తిగత బ్యాకప్":"Private backup"}</h2>
+    <p class="muted small">{lang==="te"?"బ్యాకప్‌లో వ్యక్తిగత గమనికలు ఉండవచ్చు; జాగ్రత్తగా ఉంచండి.":"A backup may include sensitive private notes. Store it securely. Browser-cleared records cannot otherwise be recovered."}</p>
+    <button class="cta secondary" id="deeksha-export" type="button">{lang==="te"?"బ్యాకప్ డౌన్‌లోడ్":"Export private backup"}</button>
+    <label class="label" for="deeksha-import">{lang==="te"?"బ్యాకప్ దిగుమతి":"Import a backup"}</label>
+    <input type="file" id="deeksha-import" accept=".json,application/json" />
+    <div id="deeksha-preview"></div>
+   </section>
+   <p id="deeksha-status" role="status" aria-live="polite"></p>
+  </div>
+ </section>
  :section==="listen"?
  <section class="shell content-section"><div class="paper-card empty-state"><span class="large-sigil" aria-hidden="true">♫</span><p class="eyebrow">{t.notReady}</p><h2>{t.audioEmpty}</h2><p>{t.draft}</p></div></section>
  :section==="pooja"||section==="prayers"?
