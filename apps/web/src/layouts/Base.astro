@@ -1,0 +1,49 @@
+---
+import { translations, pillars, type Locale, type Section, path, sectionTitle } from "../lib/site";
+interface Props { lang:Locale; title:string; section?:Section; description?:string; }
+const {lang,title,section,description}=Astro.props;
+const t=translations[lang];
+const other=lang==="en"?"te":"en";
+const seg=section?path(other,section):"/"+other+"/";
+const canonical=Astro.url.href;
+---
+<!doctype html>
+<html lang={lang}>
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#101a16" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="description" content={description??t.intro} />
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="canonical" href={canonical} />
+  <link rel="alternate" hreflang={other} href={new URL(seg,Astro.site).href} />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles/site.css" />
+  <title>{title} · SARANAM</title>
+  <script src="/scripts/ui.js" is:inline defer></script>
+  {section==="deeksha" && <script src="/scripts/deeksha.js" is:inline defer></script>}
+ </head>
+ <body data-page={section??"home"}>
+  <a class="skip" href="#main">{lang==="te"?"ప్రధాన విషయానికి వెళ్లండి":"Skip to content"}</a>
+  <div class="ambient" aria-hidden="true"><div class="ambient-orbit"></div></div>
+  <header class="topbar">
+   <div class="topbar-inner">
+    <a class="brand" href={`/${lang}/`} aria-label={t.home}>
+     <span class="brand-symbol" aria-hidden="true">✺</span><span class="brand-words"><strong>SARANAM</strong><small>{t.tagline}</small></span>
+    </a>
+    <div class="top-actions">
+     <a href={`/${lang}/search/`} class="icon-action search-link"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m16 16 5 5"/></svg><span>{t.search}</span></a>
+     <a href={seg} class="language-pill" lang={other} aria-label={t.language+` · ${other.toUpperCase()}`}>{other==="te"?"తెలుగు":"English"}</a>
+     <button class="icon-action motion-toggle" type="button" data-motion-toggle aria-pressed="false" title={t.motion}><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 17c2-5 5-9 8-10 3-1 6 3 8 10M3 20h18"/></svg><span class="motion-text">{t.motion}</span></button>
+    </div>
+   </div>
+  </header>
+  <main id="main" tabindex="-1"><slot /></main>
+  <footer class="site-footer"><span class="footer-mark">✺</span><span>{t.footer}</span><span class="footer-end">स्वामिये शरणम् अय्यप्प</span></footer>
+  <nav class="bottom-nav" aria-label={lang==="te"?"ప్రధాన విభాగాలు":"Primary sections"}>
+   {pillars.map(p=><a href={path(lang,p)} aria-current={section===p?"page":undefined} class={section===p?"active":""}><span class="nav-glyph" aria-hidden="true">{p==="pooja"?"✦":p==="prayers"?"☷":p==="deeksha"?"◷":p==="learn"?"✧":"⌖"}</span><span>{sectionTitle(lang,p)}</span></a>)}
+  </nav>
+ </body>
+</html>

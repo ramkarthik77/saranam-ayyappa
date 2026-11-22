@@ -1,0 +1,321 @@
+{
+  "schemaVersion": 1,
+  "origin": "User-created linked Ayyappa Bhajans & Stotras PDF, 21 November 2026",
+  "scope": "Catalog titles and links only; not a verified reproduction license or a religious-text approval",
+  "reviewStatus": "PENDING",
+  "counts": {
+    "bhajans": 15,
+    "stotrasAndPoojaReferences": 13,
+    "total": 28
+  },
+  "entries": [
+    {
+      "id": "bhajan-01",
+      "type": "bhajan",
+      "title": "Mallepula Pallaki Bangaru Pallaki",
+      "sourceUrl": "https://www.stotrasampada.com/2024/11/mallepula-pallaki-bangaru-pallaki.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "bhajan-02",
+      "type": "bhajan",
+      "title": "Levayya Levayya Lechi Ravayya",
+      "sourceUrl": "https://www.stotrasampada.com/2024/11/levayya-levayya-lechi-ravayya.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "bhajan-03",
+      "type": "bhajan",
+      "title": "Irumudi Kattu Sabarimalaikki",
+      "sourceUrl": "https://www.stotrasampada.com/2024/11/irumudi-kattu-sabarimalaikki.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "bhajan-04",
+      "type": "bhajan",
+      "title": "Evamma Soodamma Oka Mata",
+      "sourceUrl": "https://www.stotrasampada.com/2024/11/evamma-soodamma-oka-mata-cheppavamma.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "bhajan-05",
+      "type": "bhajan",
+      "title": "Bhagavan Saranam Bagavathi Saranam",
+      "sourceUrl": "https://www.stotrasampada.com/2024/12/bhagavan-saranam-bagavathi-saranam.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "bhajan-06",
+      "type": "bhajan",
+      "title": "Pacha Pachani Chettura",
+      "sourceUrl": "https://www.stotrasampada.com/2024/12/pacha-pachani-chettura-song-lyrics.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "bhajan-07",
+      "type": "bhajan",
+      "title": "Pallikattu Shabarimalaiki",
+      "sourceUrl": "https://www.stotrasampada.com/2024/12/pallikattu-shabarimalaiki.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "bhajan-08",
+      "type": "bhajan",
+      "title": "Maladharanam Niyamala Thoranam",
+      "sourceUrl": "https://www.stotrasampada.com/2024/12/maladharanam-niyamala-thoranam.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "bhajan-09",
+      "type": "bhajan",
+      "title": "Gauri Nandana Gajanana",
+      "sourceUrl": "https://www.stotrasampada.com/2024/12/gauri-nandana-gajanana.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "bhajan-10",
+      "type": "bhajan",
+      "title": "Kanne Swamy O Kanne Swamy",
+      "sourceUrl": "https://www.stotrasampada.com/2024/12/kanne-swamy-o-kanne-swamy.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "bhajan-11",
+      "type": "bhajan",
+      "title": "Bala Swamyini Bangaru Ayyappa",
+      "sourceUrl": "https://www.stotrasampada.com/2024/12/bala-swamyni-bangaru-ayyappa-song-lyrics.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "bhajan-12",
+      "type": "bhajan",
+      "title": "Ayyappa Kshamapana Mantram",
+      "sourceUrl": "https://www.stotrasampada.com/2024/12/ayyappa-kshamapana-mantam.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "bhajan-13",
+      "type": "bhajan",
+      "title": "Gana Gana Gantalu Ghanamuga",
+      "sourceUrl": "https://www.stotrasampada.com/2024/12/gana-gana-gantalu-ganamuga.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "bhajan-14",
+      "type": "bhajan",
+      "title": "Devudochinaduro",
+      "sourceUrl": "https://www.stotrasampada.com/2025/01/devudochinaduro-song.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "bhajan-15",
+      "type": "bhajan",
+      "title": "Ninnu Chudaka Nenundagalana",
+      "sourceUrl": "https://www.stotrasampada.com/2025/01/ninnu-chudaka-nenundagalana.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "stotra-01",
+      "type": "stotra-or-pooja-reference",
+      "title": "Sri Ayyappa Stotram",
+      "sourceUrl": "https://www.stotrasampada.com/2024/07/sri-ayyappa-stotram.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "stotra-02",
+      "type": "stotra-or-pooja-reference",
+      "title": "Ashtottara Shatanama Stotram",
+      "sourceUrl": "https://www.stotrasampada.com/2024/08/sri-ayyappa-ashtottara-shatanama-stotram.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "stotra-03",
+      "type": "stotra-or-pooja-reference",
+      "title": "Mala Dharana Mantram",
+      "sourceUrl": "https://www.stotrasampada.com/2024/10/sri-ayyappa-mala-dharana-mantram.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "stotra-04",
+      "type": "stotra-or-pooja-reference",
+      "title": "Ayyappa Metla Paata",
+      "sourceUrl": "https://www.stotrasampada.com/2024/10/ayyappa-metla-paata-in-telugu.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "stotra-05",
+      "type": "stotra-or-pooja-reference",
+      "title": "Ayyappa Sharanu Gosha",
+      "sourceUrl": "https://www.stotrasampada.com/2024/10/sri-ayyappa-sharanu-gosha-telugu.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "stotra-06",
+      "type": "stotra-or-pooja-reference",
+      "title": "Paddenimidi Metla Paata — Tamil",
+      "sourceUrl": "https://www.stotrasampada.com/2024/10/ayyappa-paddhenimidhi-metla-paata-onnam-thiruppadi.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "stotra-07",
+      "type": "stotra-or-pooja-reference",
+      "title": "Ayyappa Swamy Pooja Vidhanam",
+      "sourceUrl": "https://www.stotrasampada.com/2024/10/Sree-Ayyappa-Swamy-Pooja-Vidhanam-in-Telugu.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "stotra-08",
+      "type": "stotra-or-pooja-reference",
+      "title": "Harivarasanam",
+      "sourceUrl": "https://www.stotrasampada.com/2024/10/harivarasanam-lyrics-in-telugu.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "stotra-09",
+      "type": "stotra-or-pooja-reference",
+      "title": "Kiratha Ashtakam",
+      "sourceUrl": "https://www.stotrasampada.com/2024/10/kiratha-ashtakam-in-telugu.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "stotra-10",
+      "type": "stotra-or-pooja-reference",
+      "title": "Ashtottara Shatanamavali",
+      "sourceUrl": "https://www.stotrasampada.com/2024/10/sri-ayyappa-ashtottara-shatanamavali.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "stotra-11",
+      "type": "stotra-or-pooja-reference",
+      "title": "Sabarigirivasa Stotram",
+      "sourceUrl": "https://www.stotrasampada.com/2024/10/sri-sabarigirivasa-stotram.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "stotra-12",
+      "type": "stotra-or-pooja-reference",
+      "title": "Ayyappa Pancharatnam",
+      "sourceUrl": "https://www.stotrasampada.com/2024/10/sri-ayyappa-pancharatnam.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    },
+    {
+      "id": "stotra-13",
+      "type": "stotra-or-pooja-reference",
+      "title": "Sabari Girisha Ashtakam",
+      "sourceUrl": "https://www.stotrasampada.com/2024/12/sabari-girisha-ashtakam.html",
+      "reviewState": "candidate",
+      "sourceCount": "unreconciled",
+      "publicationRights": "unverified",
+      "language": "te",
+      "fullTextHosted": false
+    }
+  ]
+}

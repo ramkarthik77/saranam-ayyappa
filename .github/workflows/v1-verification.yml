@@ -1,0 +1,41 @@
+name: SARANAM v1 evidence and preview checks
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test release evidence checks
+        run: node --test scripts/check-v1-readiness.test.mjs
+      - name: Show release blockers
+        run: node scripts/check-v1-readiness.mjs --report
+      - name: Install preview dependencies
+        working-directory: apps/web
+        run: npm install --no-audit --no-fund
+      - name: Check Deeksha and PWA scripts
+        run: node --check apps/web/public/scripts/deeksha.js && node --check apps/web/public/scripts/ui.js && node --check apps/web/public/sw.js
+      - name: Validate rights-gated approved prayer data
+        working-directory: apps/web
+        run: node --test scripts/validate-approved-content.test.mjs && node scripts/validate-approved-content.mjs
+      - name: Build static preview (does not deploy)
+        working-directory: apps/web
+        run: npm run build
+      - name: Validate preview route inventory
+        working-directory: apps/web
+        run: npm run test:output
+      - name: Preserve static preview as a private workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: saranam-v1-static-preview
+          path: apps/web/dist/
+          retention-days: 7
+      - name: State deployment policy
+        run: echo "Gate C is blocked. This workflow NEVER deploys to production."
