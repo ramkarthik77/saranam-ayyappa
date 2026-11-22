@@ -112,3 +112,41 @@ input[type=search]{flex:1;min-width:0;border:1px solid rgba(225,194,143,.35);bor
 @media(max-width:350px){.brand-words small{display:none}.action-card h3{font-size:13px}.bottom-nav a{font-size:9px}.top-actions{gap:3px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
 html[data-reduce-motion=true] *,html[data-reduce-motion=true] *:before,html[data-reduce-motion=true] *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+
+
+/* Local-first Deeksha companion */
+.deeksha-panel{max-width:900px}
+.deeksha-panel h2{font-family:var(--serif);font-size:26px;font-weight:500;margin:26px 0 11px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:18px 0}
+.cycle-form input,.day-editor textarea,.import-choice,.backup-tools input[type=file]{
+  display:block;width:100%;margin:8px 0 0;background:#0d1b14;color:var(--cream);
+  border:1px solid var(--line);border-radius:9px;padding:12px;font:inherit;min-height:44px
+}
+.tracker-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin:23px 0}
+.tracker-day{aspect-ratio:1;min-height:44px;border:1px solid var(--line);border-radius:9px;
+ background:#112116;color:var(--cream);font:inherit;font-size:15px;cursor:pointer}
+.tracker-day.today{border-color:var(--gold2)}
+.tracker-day.selected{outline:2px solid var(--gold);outline-offset:2px}
+.tracker-day.marked{background:#415d3b;color:#fff}
+.tracker-day:hover{background:#514b36}
+.day-editor{padding:22px;background:rgba(15,29,20,.9);border:1px solid var(--line);
+ border-radius:12px;display:grid;gap:17px;margin-bottom:20px}
+.day-editor h3{font-family:var(--serif);font-size:24px;font-weight:500;margin:0}
+.tracker-check{display:flex;gap:10px;align-items:center;cursor:pointer}
+.tracker-check input{width:19px;height:19px;accent-color:#ba985b}
+.tracker-extras{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.day-editor .cta{justify-self:start}
+.archive-section,.backup-tools{margin-top:31px;padding-top:17px;border-top:1px solid var(--line)}
+.archive-row,.import-row{display:flex;justify-content:space-between;align-items:center;
+ gap:12px;border-bottom:1px solid var(--line);padding:13px 0}
+.import-row .import-choice{max-width:215px;margin:0}
+.backup-tools .cta{margin:8px 0 19px}
+.backup-tools .label{margin-top:12px}
+#deeksha-status{min-height:22px;color:var(--gold);margin-top:17px}
+@media(max-width:600px){
+ .form-grid{grid-template-columns:1fr}
+ .tracker-grid{gap:4px}.tracker-day{min-height:40px;font-size:13px}
+ .tracker-extras{grid-template-columns:1fr}
+ .archive-row,.import-row{align-items:flex-start;flex-direction:column}
+ .import-row .import-choice{max-width:100%}
+}
